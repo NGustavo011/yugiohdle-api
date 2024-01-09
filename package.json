@@ -3,6 +3,7 @@
   "module": "src/main/server.ts",
   "type": "module",
   "devDependencies": {
+    "@biomejs/biome": "1.5.0",
     "@types/bun": "latest",
     "git-commit-msg-linter": "^5.0.6"
   },
