@@ -3,7 +3,8 @@
   "module": "src/main/server.ts",
   "type": "module",
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "git-commit-msg-linter": "^5.0.6"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
