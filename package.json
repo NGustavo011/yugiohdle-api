@@ -1,13 +1,19 @@
 {
-  "name": "yugiohdle",
-  "module": "src/main/server.ts",
-  "type": "module",
-  "devDependencies": {
-    "@biomejs/biome": "1.5.0",
-    "@types/bun": "latest",
-    "git-commit-msg-linter": "^5.0.6"
-  },
-  "peerDependencies": {
-    "typescript": "^5.0.0"
-  }
+	"name": "yugiohdle",
+	"module": "src/main/server.ts",
+	"type": "module",
+	"devDependencies": {
+		"@biomejs/biome": "1.5.0",
+		"@types/bun": "latest",
+		"@types/pg": "^8.10.9",
+		"drizzle-kit": "^0.20.10",
+		"git-commit-msg-linter": "^5.0.6"
+	},
+	"peerDependencies": {
+		"typescript": "^5.0.0"
+	},
+	"dependencies": {
+		"drizzle-orm": "^0.29.3",
+		"pg": "^8.11.3"
+	}
 }

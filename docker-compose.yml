@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+    yugiohdle:
+        image: postgres
+        container_name: database_yugiohdle
+        restart: always
+        ports: 
+            - 5432:5432
+        environment:
+            - POSTGRES_USER=user
+            - POSTGRES_PASSWORD=pass
+            - POSTGRES_DB=yugiohdle
