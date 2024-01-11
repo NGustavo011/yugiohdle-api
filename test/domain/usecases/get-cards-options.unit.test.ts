@@ -1,10 +1,7 @@
 import { describe, test, jest, beforeAll, expect, beforeEach } from "bun:test";
 import { GetCardsOptions } from "../../../src/domain/usecases/get-cards-options";
 import { mockSavedCard } from "../../mocks/mock-card";
-
-const throwError = (): never => {
-	throw new Error();
-};
+import { throwError } from "../../mocks/mock-error";
 
 describe("GetCardsOptions usecase", () => {
 	let getCardsOptionsRepository: {
