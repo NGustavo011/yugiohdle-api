@@ -3,30 +3,30 @@ type CardInput = {
 	type: string;
 	frameType: string;
 	description: string;
-	atk: number;
-	def: number;
-	level: number;
+	atk: number | null;
+	def: number | null;
+	level: number | null;
 	race: string;
-	attribute: string;
-	archetype: string;
+	attribute: string | null;
+	archetype: string | null;
 	imageUrl: string;
 	imageUrlSmall: string;
 	imageUrlCropped: string;
 };
 
-type SavedCardInput = CardInput & { id: string };
+type SavedCardInput = CardInput & { id: string; available: boolean | null };
 
 export class Card {
 	private readonly name: string;
 	private readonly type: string;
 	private readonly frameType: string;
 	private readonly description: string;
-	private readonly atk: number;
-	private readonly def: number;
-	private readonly level: number;
+	private readonly atk: number | null;
+	private readonly def: number | null;
+	private readonly level: number | null;
 	private readonly race: string;
-	private readonly attribute: string;
-	private readonly archetype: string;
+	private readonly attribute: string | null;
+	private readonly archetype: string | null;
 	private readonly imageUrl: string;
 	private readonly imageUrlSmall: string;
 	private readonly imageUrlCropped: string;
@@ -65,7 +65,7 @@ export class Card {
 		};
 	}
 
-	getSavedCard(id: string): SavedCard {
+	getSavedCard(id: string, available: boolean | null): SavedCard {
 		return new SavedCard({
 			id,
 			name: this.name,
@@ -81,23 +81,27 @@ export class Card {
 			imageUrl: this.imageUrl,
 			imageUrlSmall: this.imageUrlSmall,
 			imageUrlCropped: this.imageUrlCropped,
+			available,
 		});
 	}
 }
 
 export class SavedCard extends Card {
 	private readonly id: string;
+	private readonly available: boolean | null;
 
 	constructor(input: SavedCardInput) {
-		const { id, ...rest } = input;
+		const { id, available, ...rest } = input;
 		super(rest);
 		this.id = id;
+		this.available = available;
 	}
 
 	getDto() {
 		return {
 			...super.getDto(),
 			id: this.id,
+			available: this.available,
 		};
 	}
 }

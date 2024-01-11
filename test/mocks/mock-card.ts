@@ -16,5 +16,6 @@ export const mockSavedCard = (): SavedCard => {
 		atk: 0,
 		def: 0,
 		level: 0,
+		available: true,
 	});
 };
