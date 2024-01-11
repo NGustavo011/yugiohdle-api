@@ -1,3 +1,5 @@
+import type { SavedCard } from "../../../../domain/entities/card";
+
 export interface SetDailyCardRepository {
-	setDailyCard(): Promise<void>;
+	setDailyCard(dailyCard: SavedCard): Promise<void>;
 }
