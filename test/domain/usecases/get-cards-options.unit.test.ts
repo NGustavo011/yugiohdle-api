@@ -33,7 +33,6 @@ describe("GetCardsOptions usecase", () => {
 				throwError,
 			);
 			const promise = sut.execute();
-			console.log(promise);
 			await expect(promise).rejects.toThrow();
 		});
 	});

@@ -31,7 +31,6 @@ describe("GetDailyCard usecase", () => {
 		test("Should pass exception if GetDailyCardRepository throws an error", async () => {
 			getDailyCardRepository.getDailyCard.mockImplementationOnce(throwError);
 			const promise = sut.execute();
-			console.log(promise);
 			await expect(promise).rejects.toThrow();
 		});
 	});
