@@ -48,16 +48,6 @@ describe("CardRepository usecase", () => {
 		});
 	});
 
-	describe("getUnlimitedCards()", () => {
-		test("Must return all existing cards in random order to unlimited mode", async () => {
-			await insertCard(false);
-			await insertCard();
-			await insertCard();
-			const options = await sut.getUnlimitedCards();
-			expect(options).toHaveLength(3);
-		});
-	});
-
 	describe("refreshAvailableDailyCards", () => {
 		test("Must update the available column of all existing cards", async () => {
 			await insertCard(false);

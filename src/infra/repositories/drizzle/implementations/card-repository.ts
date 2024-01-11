@@ -1,10 +1,7 @@
 import { eq } from "drizzle-orm";
 import type { CheckAvailableDailyCardsRepository } from "../../../../contracts/infra/repositories/cards/check-available-daily-cards-repository";
 import type { GetCardsOptionsRepository } from "../../../../contracts/infra/repositories/cards/get-cards-options-repository";
-import type { GetDailyCardRepository } from "../../../../contracts/infra/repositories/cards/get-daily-card-repository";
-import type { GetUnlimitedCardsRepository } from "../../../../contracts/infra/repositories/cards/get-unlimited-cards-repository";
 import type { RefreshAvailableDailyCardsRepository } from "../../../../contracts/infra/repositories/cards/refresh-available-daily-cards-repository";
-import type { SetDailyCardRepository } from "../../../../contracts/infra/repositories/cards/set-daily-card-repository";
 import { db } from "../config/connection";
 import { card } from "../schemas/card";
 import { SavedCard } from "../../../../domain/entities/card";
@@ -15,7 +12,6 @@ export class CardRepository
 		CheckAvailableDailyCardsRepository,
 		ChooseDailyCardRepository,
 		GetCardsOptionsRepository,
-		GetUnlimitedCardsRepository,
 		RefreshAvailableDailyCardsRepository
 {
 	async checkAvailableDailyCards(): Promise<boolean> {
@@ -53,30 +49,6 @@ export class CardRepository
 	async getCardsOptions(): Promise<SavedCard[]> {
 		const cardsOptions = await db.select().from(card);
 		return cardsOptions.map((card) => {
-			return new SavedCard({
-				id: card.id,
-				name: card.name,
-				race: card.race,
-				type: card.type,
-				archetype: card.archetype,
-				attribute: card.attribute,
-				description: card.description,
-				frameType: card.frameType,
-				imageUrl: card.imageUrl,
-				imageUrlSmall: card.imageUrlSmall,
-				imageUrlCropped: card.imageUrlCropped,
-				atk: card.atk ? Number(card.atk) : null,
-				def: card.def ? Number(card.def) : null,
-				level: card.level ? Number(card.level) : null,
-				available: card.available,
-			});
-		});
-	}
-
-	async getUnlimitedCards(): Promise<SavedCard[]> {
-		const cards = await db.select().from(card);
-		const shuffledCards = cards.sort(() => Math.random() - 0.5);
-		return shuffledCards.map((card) => {
 			return new SavedCard({
 				id: card.id,
 				name: card.name,
