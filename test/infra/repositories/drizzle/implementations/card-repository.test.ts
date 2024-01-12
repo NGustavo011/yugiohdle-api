@@ -28,13 +28,19 @@ describe("CardRepository usecase", () => {
 	});
 
 	describe("chooseDailyCard()", () => {
-		test("Should return a card available", async () => {
+		test("Shoud return an available card and update it at the db to become unavailable", async () => {
 			await insertCard(false);
 			await insertCard();
 			await insertCard();
 			const dailyCard = await sut.chooseDailyCard();
+			const dailyCardInDb = await db
+				.select()
+				.from(card)
+				.where(eq(card.id, dailyCard.getDto().id));
 			expect(dailyCard).toBeTruthy();
 			expect(dailyCard.getDto().available).toBeTruthy();
+			expect(dailyCardInDb[0].id).toBe(dailyCard.getDto().id);
+			expect(dailyCardInDb[0].available).toBeFalsy();
 		});
 	});
 

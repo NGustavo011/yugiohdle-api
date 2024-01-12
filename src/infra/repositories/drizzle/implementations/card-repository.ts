@@ -27,6 +27,10 @@ export class CardRepository
 		const cards = await db.select().from(card).where(eq(card.available, true));
 		const shuffledCards = cards.sort(() => Math.random() - 0.5);
 		const dailyCard = shuffledCards[0];
+		await db
+			.update(card)
+			.set({ available: false })
+			.where(eq(card.id, dailyCard.id));
 		return new SavedCard({
 			id: dailyCard.id,
 			name: dailyCard.name,
