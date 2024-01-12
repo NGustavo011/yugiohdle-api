@@ -1,48 +1,48 @@
-import { describe, test, jest, beforeAll, expect, beforeEach } from "bun:test";
+import { describe, test, type Mock, beforeAll, expect, beforeEach, vi } from "vitest";
 import { ChangeDailyCard } from "../../../src/domain/usecases/change-daily-card";
 import { mockSavedCard } from "../../mocks/mock-card";
 import { throwError } from "../../mocks/mock-error";
 
 describe("ChangeDailyCard usecase", () => {
 	let checkAvailableDailyCardsRepository: {
-		checkAvailableDailyCards: jest.Mock;
+		checkAvailableDailyCards: Mock;
 	};
 	let chooseDailyCardRepository: {
-		chooseDailyCard: jest.Mock;
+		chooseDailyCard: Mock;
 	};
 	let refreshAvailableDailyCardsRepository: {
-		refreshAvailableDailyCards: jest.Mock;
+		refreshAvailableDailyCards: Mock;
 	};
 	let setDailyCardRepository: {
-		setDailyCard: jest.Mock;
+		setDailyCard: Mock;
 	};
 	let sut: ChangeDailyCard;
 
 	beforeAll(() => {
 		checkAvailableDailyCardsRepository = {
-			checkAvailableDailyCards: jest.fn().mockImplementation(() => {
+			checkAvailableDailyCards: vi.fn().mockImplementation(() => {
 				return true;
 			}),
 		};
 		chooseDailyCardRepository = {
-			chooseDailyCard: jest.fn().mockImplementation(() => {
+			chooseDailyCard: vi.fn().mockImplementation(() => {
 				return mockSavedCard();
 			}),
 		};
 		refreshAvailableDailyCardsRepository = {
-			refreshAvailableDailyCards: jest.fn().mockImplementation(() => {
+			refreshAvailableDailyCards: vi.fn().mockImplementation(() => {
 				return;
 			}),
 		};
 		setDailyCardRepository = {
-			setDailyCard: jest.fn().mockImplementation(() => {
+			setDailyCard: vi.fn().mockImplementation(() => {
 				return;
 			}),
 		};
 	});
 
 	beforeEach(() => {
-		jest.restoreAllMocks();
+		vi.clearAllMocks();
 		sut = new ChangeDailyCard(
 			checkAvailableDailyCardsRepository,
 			chooseDailyCardRepository,

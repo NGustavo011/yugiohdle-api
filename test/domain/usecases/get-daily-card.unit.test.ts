@@ -1,24 +1,24 @@
-import { describe, test, jest, beforeAll, expect, beforeEach } from "bun:test";
+import { describe, test,type Mock, beforeAll, expect, beforeEach, vi } from "vitest";
 import { GetDailyCard } from "../../../src/domain/usecases/get-daily-card";
 import { mockSavedCard } from "../../mocks/mock-card";
 import { throwError } from "../../mocks/mock-error";
 
 describe("GetDailyCard usecase", () => {
 	let getDailyCardRepository: {
-		getDailyCard: jest.Mock;
+		getDailyCard: Mock;
 	};
 	let sut: GetDailyCard;
 
 	beforeAll(() => {
 		getDailyCardRepository = {
-			getDailyCard: jest.fn().mockImplementation(() => {
+			getDailyCard: vi.fn().mockImplementation(() => {
 				return mockSavedCard();
 			}),
 		};
 	});
 
 	beforeEach(() => {
-		jest.restoreAllMocks();
+		vi.clearAllMocks();
 		sut = new GetDailyCard(getDailyCardRepository);
 	});
 

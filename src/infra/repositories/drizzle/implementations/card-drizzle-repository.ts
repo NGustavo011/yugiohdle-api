@@ -15,11 +15,11 @@ export class CardDrizzleRepository
 		RefreshAvailableDailyCardsRepository
 {
 	async checkAvailableDailyCards(): Promise<boolean> {
-		const cardAvailables = await db
+		const cardsAvailable = await db
 			.select()
 			.from(card)
 			.where(eq(card.available, true));
-		if (cardAvailables.length === 0) return false;
+		if (cardsAvailable.length === 0) return false;
 		return true;
 	}
 

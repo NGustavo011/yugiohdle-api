@@ -1,24 +1,24 @@
-import { describe, test, jest, beforeAll, expect, beforeEach } from "bun:test";
+import { describe, test, type Mock, beforeAll, expect, beforeEach, vi } from "vitest";
 import { GetCards } from "../../../src/domain/usecases/get-cards";
 import { mockSavedCard } from "../../mocks/mock-card";
 import { throwError } from "../../mocks/mock-error";
 
 describe("GetCards usecase", () => {
 	let getCardsRepository: {
-		getCards: jest.Mock;
+		getCards: Mock;
 	};
 	let sut: GetCards;
 
 	beforeAll(() => {
 		getCardsRepository = {
-			getCards: jest.fn().mockImplementation(() => {
+			getCards: vi.fn().mockImplementation(() => {
 				return [mockSavedCard(), mockSavedCard(), mockSavedCard()];
 			}),
 		};
 	});
 
 	beforeEach(() => {
-		jest.restoreAllMocks();
+		vi.clearAllMocks();
 		sut = new GetCards(getCardsRepository);
 	});
 

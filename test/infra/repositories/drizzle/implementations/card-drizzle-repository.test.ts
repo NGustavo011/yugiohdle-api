@@ -1,4 +1,4 @@
-import { describe, test, jest, beforeAll, expect, beforeEach } from "bun:test";
+import { describe, test, beforeAll, expect, beforeEach } from "vitest";
 import { CardDrizzleRepository } from "../../../../../src/infra/repositories/drizzle/implementations/card-drizzle-repository";
 import { clearDatabase, insertCard } from "../../../../mocks/mock-drizzle";
 import { db } from "../../../../../src/infra/repositories/drizzle/config/connection";

@@ -6,8 +6,14 @@
     "@biomejs/biome": "1.5.0",
     "@types/bun": "latest",
     "@types/pg": "^8.10.9",
+    "@vitest/coverage-v8": "^1.2.0",
     "drizzle-kit": "^0.20.10",
-    "git-commit-msg-linter": "^5.0.6"
+    "git-commit-msg-linter": "^5.0.6",
+    "vitest": "^1.2.0"
+  },
+  "scripts": {
+    "test": "vitest",
+    "migrate:up": "tsx src/infra/repositories/drizzle/config/migrate.ts"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
