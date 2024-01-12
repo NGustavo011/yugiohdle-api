@@ -16,13 +16,17 @@ describe("CardRepository usecase", () => {
 	describe("checkAvailableDailyCards()", () => {
 		test("It should return false if it doesn't find any available cards", async () => {
 			await insertCard(false);
+
 			const areCardsAvailable = await sut.checkAvailableDailyCards();
+
 			expect(areCardsAvailable).toBeFalsy();
 		});
 
 		test("It should return true if find any available cards", async () => {
 			await insertCard();
+
 			const areCardsAvailable = await sut.checkAvailableDailyCards();
+
 			expect(areCardsAvailable).toBeTruthy();
 		});
 	});
@@ -32,11 +36,13 @@ describe("CardRepository usecase", () => {
 			await insertCard(false);
 			await insertCard();
 			await insertCard();
+
 			const dailyCard = await sut.chooseDailyCard();
 			const dailyCardInDb = await db
 				.select()
 				.from(card)
 				.where(eq(card.id, dailyCard.getDto().id));
+
 			expect(dailyCard).toBeTruthy();
 			expect(dailyCard.getDto().available).toBeTruthy();
 			expect(dailyCardInDb[0].id).toBe(dailyCard.getDto().id);
@@ -49,7 +55,9 @@ describe("CardRepository usecase", () => {
 			await insertCard(false);
 			await insertCard();
 			await insertCard();
+
 			const cards = await sut.getCards();
+
 			expect(cards).toHaveLength(3);
 		});
 	});
@@ -59,11 +67,13 @@ describe("CardRepository usecase", () => {
 			await insertCard(false);
 			await insertCard(false);
 			await insertCard();
+
 			await sut.refreshAvailableDailyCards();
 			const availableCards = await db
 				.select()
 				.from(card)
 				.where(eq(card.available, true));
+
 			expect(availableCards).toHaveLength(3);
 		});
 	});

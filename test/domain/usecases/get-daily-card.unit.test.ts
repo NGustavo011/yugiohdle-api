@@ -25,18 +25,22 @@ describe("GetDailyCard usecase", () => {
 	describe("GetDailyCardRepository dependency", () => {
 		test("Should call GetDailyCardRepository correctly", async () => {
 			await sut.execute();
+
 			expect(getDailyCardRepository.getDailyCard).toHaveBeenCalled();
 		});
 
 		test("Should pass exception if GetDailyCardRepository throws an error", async () => {
 			getDailyCardRepository.getDailyCard.mockImplementationOnce(throwError);
+
 			const promise = sut.execute();
+
 			await expect(promise).rejects.toThrow();
 		});
 	});
 
 	test("Should return a successful SavedCard", async () => {
 		const card = await sut.execute();
+
 		expect(card).toEqual(mockSavedCard());
 	});
 });

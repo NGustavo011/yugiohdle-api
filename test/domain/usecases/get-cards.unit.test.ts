@@ -25,18 +25,22 @@ describe("GetCards usecase", () => {
 	describe("GetCardsRepository dependency", () => {
 		test("Should call GetCardsRepository correctly", async () => {
 			await sut.execute();
+
 			expect(getCardsRepository.getCards).toHaveBeenCalled();
 		});
 
 		test("Should pass exception if GetCardsRepository throws an error", async () => {
 			getCardsRepository.getCards.mockImplementationOnce(throwError);
+
 			const promise = sut.execute();
+
 			await expect(promise).rejects.toThrow();
 		});
 	});
 
 	test("Should return a successful SavedCard", async () => {
 		const card = await sut.execute();
+
 		expect(card).toEqual([mockSavedCard(), mockSavedCard(), mockSavedCard()]);
 	});
 });

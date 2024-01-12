@@ -54,6 +54,7 @@ describe("ChangeDailyCard usecase", () => {
 	describe("CheckAvailableDailyCardsRepository dependency", () => {
 		test("Should call CheckAvailableDailyCardsRepository correctly", async () => {
 			await sut.execute();
+
 			expect(
 				checkAvailableDailyCardsRepository.checkAvailableDailyCards,
 			).toHaveBeenCalled();
@@ -63,7 +64,9 @@ describe("ChangeDailyCard usecase", () => {
 			checkAvailableDailyCardsRepository.checkAvailableDailyCards.mockImplementationOnce(
 				throwError,
 			);
+
 			const promise = sut.execute();
+
 			await expect(promise).rejects.toThrow();
 		});
 	});
@@ -71,6 +74,7 @@ describe("ChangeDailyCard usecase", () => {
 	describe("RefreshAvailableDailyCardRepository dependency", () => {
 		test("Should not call RefreshAvailableDailyCardRepository correctly when CheckAvailableDailyCardsRepository returns true", async () => {
 			await sut.execute();
+
 			expect(
 				refreshAvailableDailyCardsRepository.refreshAvailableDailyCards,
 			).not.toHaveBeenCalled();
@@ -82,7 +86,9 @@ describe("ChangeDailyCard usecase", () => {
 					return false;
 				},
 			);
+
 			await sut.execute();
+
 			expect(
 				refreshAvailableDailyCardsRepository.refreshAvailableDailyCards,
 			).toHaveBeenCalled();
@@ -97,7 +103,9 @@ describe("ChangeDailyCard usecase", () => {
 			refreshAvailableDailyCardsRepository.refreshAvailableDailyCards.mockImplementationOnce(
 				throwError,
 			);
+
 			const promise = sut.execute();
+
 			await expect(promise).rejects.toThrow();
 		});
 	});
@@ -105,6 +113,7 @@ describe("ChangeDailyCard usecase", () => {
 	describe("ChooseDailyCardRepository dependency", () => {
 		test("Should call ChooseDailyCardRepository correctly when CheckAvailableDailyCardsRepository returns true", async () => {
 			await sut.execute();
+
 			expect(chooseDailyCardRepository.chooseDailyCard).toHaveBeenCalled();
 		});
 
@@ -114,7 +123,9 @@ describe("ChangeDailyCard usecase", () => {
 					return false;
 				},
 			);
+
 			await sut.execute();
+
 			expect(chooseDailyCardRepository.chooseDailyCard).toHaveBeenCalled();
 		});
 
@@ -122,7 +133,9 @@ describe("ChangeDailyCard usecase", () => {
 			chooseDailyCardRepository.chooseDailyCard.mockImplementationOnce(
 				throwError,
 			);
+
 			const promise = sut.execute();
+
 			await expect(promise).rejects.toThrow();
 		});
 	});
@@ -130,6 +143,7 @@ describe("ChangeDailyCard usecase", () => {
 	describe("SetDailyCardRepository dependency", () => {
 		test("Should call SetDailyCardRepository correctly when CheckAvailableDailyCardsRepository returns true", async () => {
 			await sut.execute();
+
 			expect(setDailyCardRepository.setDailyCard).toHaveBeenCalledWith(
 				mockSavedCard(),
 			);
@@ -141,7 +155,9 @@ describe("ChangeDailyCard usecase", () => {
 					return false;
 				},
 			);
+
 			await sut.execute();
+
 			expect(setDailyCardRepository.setDailyCard).toHaveBeenCalledWith(
 				mockSavedCard(),
 			);
@@ -149,7 +165,9 @@ describe("ChangeDailyCard usecase", () => {
 
 		test("Should pass exception if SetDailyCardRepository throws an error", async () => {
 			setDailyCardRepository.setDailyCard.mockImplementationOnce(throwError);
+
 			const promise = sut.execute();
+
 			await expect(promise).rejects.toThrow();
 		});
 	});
