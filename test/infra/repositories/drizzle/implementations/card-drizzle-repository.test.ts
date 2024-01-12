@@ -1,15 +1,15 @@
 import { describe, test, jest, beforeAll, expect, beforeEach } from "bun:test";
-import { CardRepository } from "../../../../../src/infra/repositories/drizzle/implementations/card-repository";
+import { CardDrizzleRepository } from "../../../../../src/infra/repositories/drizzle/implementations/card-drizzle-repository";
 import { clearDatabase, insertCard } from "../../../../mocks/mock-drizzle";
 import { db } from "../../../../../src/infra/repositories/drizzle/config/connection";
 import { card } from "../../../../../src/infra/repositories/drizzle/schemas/card";
 import { eq } from "drizzle-orm";
 
-describe("CardRepository usecase", () => {
-	let sut: CardRepository;
+describe("CardDrizzleRepository usecase", () => {
+	let sut: CardDrizzleRepository;
 
 	beforeEach(async () => {
-		sut = new CardRepository();
+		sut = new CardDrizzleRepository();
 		await clearDatabase();
 	});
 

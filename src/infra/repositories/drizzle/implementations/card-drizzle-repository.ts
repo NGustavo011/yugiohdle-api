@@ -7,7 +7,7 @@ import { card } from "../schemas/card";
 import { SavedCard } from "../../../../domain/entities/card";
 import type { ChooseDailyCardRepository } from "../../../../contracts/infra/repositories/cards/choose-daily-card-repository";
 
-export class CardRepository
+export class CardDrizzleRepository
 	implements
 		CheckAvailableDailyCardsRepository,
 		ChooseDailyCardRepository,
