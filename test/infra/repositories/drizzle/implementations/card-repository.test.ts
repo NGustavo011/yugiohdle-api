@@ -44,13 +44,13 @@ describe("CardRepository usecase", () => {
 		});
 	});
 
-	describe("getCardsOptions()", () => {
-		test("Must return all existing cards as options", async () => {
+	describe("getCards()", () => {
+		test("Must return all existing cards", async () => {
 			await insertCard(false);
 			await insertCard();
 			await insertCard();
-			const options = await sut.getCardsOptions();
-			expect(options).toHaveLength(3);
+			const cards = await sut.getCards();
+			expect(cards).toHaveLength(3);
 		});
 	});
 

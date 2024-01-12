@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import type { CheckAvailableDailyCardsRepository } from "../../../../contracts/infra/repositories/cards/check-available-daily-cards-repository";
-import type { GetCardsOptionsRepository } from "../../../../contracts/infra/repositories/cards/get-cards-options-repository";
+import type { GetCardsRepository } from "../../../../contracts/infra/repositories/cards/get-cards-repository";
 import type { RefreshAvailableDailyCardsRepository } from "../../../../contracts/infra/repositories/cards/refresh-available-daily-cards-repository";
 import { db } from "../config/connection";
 import { card } from "../schemas/card";
@@ -11,7 +11,7 @@ export class CardRepository
 	implements
 		CheckAvailableDailyCardsRepository,
 		ChooseDailyCardRepository,
-		GetCardsOptionsRepository,
+		GetCardsRepository,
 		RefreshAvailableDailyCardsRepository
 {
 	async checkAvailableDailyCards(): Promise<boolean> {
@@ -50,9 +50,9 @@ export class CardRepository
 		});
 	}
 
-	async getCardsOptions(): Promise<SavedCard[]> {
-		const cardsOptions = await db.select().from(card);
-		return cardsOptions.map((card) => {
+	async getCards(): Promise<SavedCard[]> {
+		const Cards = await db.select().from(card);
+		return Cards.map((card) => {
 			return new SavedCard({
 				id: card.id,
 				name: card.name,
