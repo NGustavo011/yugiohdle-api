@@ -8,7 +8,6 @@ export class CardRedisRepository
 	implements GetDailyCardRepository, SetDailyCardRepository
 {
 	async getDailyCard(): Promise<SavedCard> {
-		console.log("OI");
 		await redisClient.connect();
 		const dailyCard = await redisClient.hGetAll(env.cacheDailyCardKey);
 		await redisClient.disconnect();
