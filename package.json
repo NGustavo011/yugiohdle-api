@@ -7,6 +7,7 @@
     "@types/bun": "latest",
     "@types/pg": "^8.10.9",
     "@vitest/coverage-v8": "^1.2.0",
+    "dotenv": "^16.3.1",
     "drizzle-kit": "^0.20.10",
     "git-commit-msg-linter": "^5.0.6",
     "vitest": "^1.2.0"

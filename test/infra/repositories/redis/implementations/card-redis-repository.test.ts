@@ -49,8 +49,6 @@ describe("CardRedis repository", () => {
 			await insertDailyCard(mockSavedCardWithPropsNull());
 
 			const dailyCard = await sut.getDailyCard();
-			console.log(dailyCard);
-			console.log(dailyCard.getDto());
 
 			expect(dailyCard.getDto().id).toBe(mockSavedCard().getDto().id);
 			expect(dailyCard.getDto().name).toBe(mockSavedCard().getDto().name);
