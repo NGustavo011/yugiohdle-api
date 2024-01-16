@@ -1,12 +1,44 @@
 import { redisClient } from "../config/connection";
-import { SavedCard } from "../../../../domain/entities/card";
+import { SavedCard, type CardType } from "../../../../domain/entities/card";
 import type { GetDailyCardRepository } from "../../../../contracts/infra/repositories/cards/get-daily-card-repository";
 import type { SetDailyCardRepository } from "../../../../contracts/infra/repositories/cards/set-daily-card-repository";
 import env from "../../../../main/config/env";
+import type { GetCardsRepository } from "../../../../contracts/infra/repositories/cards/get-cards-repository";
+import type { SetCardsRepository } from "../../../../contracts/infra/repositories/cards/set-cards-repository";
 
 export class CardRedisRepository
-	implements GetDailyCardRepository, SetDailyCardRepository
+	implements
+		GetCardsRepository,
+		GetDailyCardRepository,
+		SetCardsRepository,
+		SetDailyCardRepository
 {
+	async getCards(): Promise<SavedCard[]> {
+		await redisClient.connect();
+		const redisCards = (await redisClient.get(env.cacheCardsKey)) as string;
+		await redisClient.disconnect();
+		const cards = JSON.parse(redisCards);
+		return cards.map((card: CardType) => {
+			return new SavedCard({
+				id: card.id,
+				name: card.name,
+				race: card.race,
+				type: card.type,
+				archetype: card.archetype ? card.archetype : null,
+				attribute: card.attribute ? card.attribute : null,
+				description: card.description,
+				frameType: card.frameType,
+				imageUrl: card.imageUrl,
+				imageUrlSmall: card.imageUrlSmall,
+				imageUrlCropped: card.imageUrlCropped,
+				atk: Number(card.atk) ? Number(card.atk) : null,
+				def: Number(card.def) ? Number(card.def) : null,
+				level: Number(card.level) ? Number(card.level) : null,
+				available: Boolean(card.available),
+			});
+		});
+	}
+
 	async getDailyCard(): Promise<SavedCard> {
 		await redisClient.connect();
 		const dailyCard = await redisClient.hGetAll(env.cacheDailyCardKey);
@@ -23,11 +55,22 @@ export class CardRedisRepository
 			imageUrl: dailyCard.imageUrl,
 			imageUrlSmall: dailyCard.imageUrlSmall,
 			imageUrlCropped: dailyCard.imageUrlCropped,
-			atk: dailyCard.atk ? Number(dailyCard.atk) : null,
-			def: dailyCard.def ? Number(dailyCard.def) : null,
-			level: dailyCard.level ? Number(dailyCard.level) : null,
+			atk: Number(dailyCard.atk) ? Number(dailyCard.atk) : null,
+			def: Number(dailyCard.def) ? Number(dailyCard.def) : null,
+			level: Number(dailyCard.level) ? Number(dailyCard.level) : null,
 			available: Boolean(dailyCard.available),
 		});
+	}
+
+	async setCards(cards: SavedCard[]): Promise<void> {
+		await redisClient.connect();
+		await redisClient.del(env.cacheDailyCardKey);
+		const cardsDto = cards.map((card) => {
+			return card.getDto();
+		});
+		const cardsStringify = JSON.stringify(cardsDto);
+		await redisClient.set(env.cacheDailyCardKey, cardsStringify);
+		await redisClient.disconnect();
 	}
 
 	async setDailyCard(dailyCard: SavedCard): Promise<void> {

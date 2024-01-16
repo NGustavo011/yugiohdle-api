@@ -13,9 +13,29 @@ export const mockSavedCard = (): SavedCard => {
 		imageUrl: "any_image_url",
 		imageUrlSmall: "any_image_url_small",
 		imageUrlCropped: "any_image_url_cropped",
-		atk: 0,
-		def: 0,
-		level: 0,
+		atk: 10,
+		def: 10,
+		level: 10,
+		available: true,
+	});
+};
+
+export const mockSavedCardWithPropsNull = (): SavedCard => {
+	return new SavedCard({
+		id: "any_id",
+		name: "any_name",
+		race: "any_race",
+		type: "any_type",
+		archetype: null,
+		attribute: null,
+		description: "any_description",
+		frameType: "any_frame_type",
+		imageUrl: "any_image_url",
+		imageUrlSmall: "any_image_url_small",
+		imageUrlCropped: "any_image_url_cropped",
+		atk: null,
+		def: null,
+		level: null,
 		available: true,
 	});
 };

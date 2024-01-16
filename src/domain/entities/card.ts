@@ -1,3 +1,21 @@
+export type CardType = {
+	id: string;
+	name: string;
+	type: string;
+	frameType: string;
+	description: string;
+	atk: number | null;
+	def: number | null;
+	level: number | null;
+	race: string;
+	attribute: string | null;
+	archetype: string | null;
+	imageUrl: string;
+	imageUrlSmall: string;
+	imageUrlCropped: string;
+	available: boolean;
+};
+
 type CardInput = {
 	name: string;
 	type: string;
