@@ -64,12 +64,12 @@ export class CardRedisRepository
 
 	async setCards(cards: SavedCard[]): Promise<void> {
 		await redisClient.connect();
-		await redisClient.del(env.cacheDailyCardKey);
+		await redisClient.del(env.cacheCardsKey);
 		const cardsDto = cards.map((card) => {
 			return card.getDto();
 		});
 		const cardsStringify = JSON.stringify(cardsDto);
-		await redisClient.set(env.cacheDailyCardKey, cardsStringify);
+		await redisClient.set(env.cacheCardsKey, cardsStringify);
 		await redisClient.disconnect();
 	}
 
