@@ -6,7 +6,13 @@ export default defineConfig({
 		coverage: {
 			enabled: true,
 			provider: "v8",
-			exclude: ["src/**/contracts/**/*.ts", "src/**/config/**/*.ts"],
+			exclude: [
+				"src/**/contracts/**/*.ts",
+				"src/**/config/**/*.ts",
+				"src/domain/entities/*.ts",
+				"src/application/errors/**/*.ts",
+				"src/application/helpers/**/*.ts",
+			],
 			include: ["src"],
 		},
 		root: ".",
