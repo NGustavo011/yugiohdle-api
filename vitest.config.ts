@@ -12,6 +12,8 @@ export default defineConfig({
 				"src/domain/entities/*.ts",
 				"src/application/errors/**/*.ts",
 				"src/application/helpers/**/*.ts",
+				"src/main/adapters/*.ts",
+				"src/main/server.ts",
 			],
 			include: ["src"],
 		},
