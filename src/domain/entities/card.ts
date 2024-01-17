@@ -82,26 +82,6 @@ export class Card {
 			imageUrlCropped: this.imageUrlCropped,
 		};
 	}
-
-	getSavedCard(id: string, available: boolean | null): SavedCard {
-		return new SavedCard({
-			id,
-			name: this.name,
-			type: this.type,
-			frameType: this.frameType,
-			description: this.description,
-			atk: this.atk,
-			def: this.def,
-			level: this.level,
-			race: this.race,
-			attribute: this.attribute,
-			archetype: this.archetype,
-			imageUrl: this.imageUrl,
-			imageUrlSmall: this.imageUrlSmall,
-			imageUrlCropped: this.imageUrlCropped,
-			available,
-		});
-	}
 }
 
 export class SavedCard extends Card {

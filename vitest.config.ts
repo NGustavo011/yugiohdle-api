@@ -9,7 +9,6 @@ export default defineConfig({
 			exclude: [
 				"src/**/contracts/**/*.ts",
 				"src/**/config/**/*.ts",
-				"src/domain/entities/*.ts",
 				"src/application/errors/**/*.ts",
 				"src/application/helpers/**/*.ts",
 				"src/main/adapters/*.ts",
