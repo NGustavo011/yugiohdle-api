@@ -6,6 +6,7 @@ import {
 	type Mock,
 	test,
 	expect,
+	afterEach,
 } from "vitest";
 import type { HttpRequest } from "../../../src/contracts/application/controllers/http";
 import { GetDailyCardController } from "../../../src/application/controllers/get-daily-card-controller";
@@ -25,6 +26,7 @@ describe("GetDailyCard Controller", () => {
 		execute: Mock;
 	};
 	let sut: GetDailyCardController;
+	const original = console.log;
 
 	beforeAll(() => {
 		getDailyCardUsecase = {
@@ -35,8 +37,12 @@ describe("GetDailyCard Controller", () => {
 	});
 
 	beforeEach(() => {
+		console.log = vi.fn();
 		vi.clearAllMocks();
 		sut = new GetDailyCardController(getDailyCardUsecase);
+	});
+	afterEach(() => {
+		console.log = original;
 	});
 
 	describe("GetDailyCard dependency", () => {
