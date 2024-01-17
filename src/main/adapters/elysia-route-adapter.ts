@@ -1,7 +1,7 @@
 import type { Controller } from "../../contracts/application/controllers/controller";
 import type { HttpRequest } from "../../contracts/application/controllers/http";
 
-export const adaptRoute = (controller: Controller) => {
+export const adaptElysiaRoute = (controller: Controller) => {
 	return async (req: any) => {
 		const queryParams: { [index: string]: any } = {};
 		if (req.query) {

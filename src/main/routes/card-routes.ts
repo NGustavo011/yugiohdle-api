@@ -1,8 +1,11 @@
 import Elysia from "elysia";
-import { adaptRoute } from "../adapters/elysia-route-adapter";
+import { adaptElysiaRoute } from "../adapters/elysia-route-adapter";
 import { makeGetDailyCardController } from "../factories/controllers/get-daily-card-controller-factory";
 import { makeGetCardsController } from "../factories/controllers/get-cards-controller-factory";
 
 export const cardRoutes = new Elysia();
-cardRoutes.get("/get-daily-card", adaptRoute(makeGetDailyCardController()));
-cardRoutes.get("/get-cards", adaptRoute(makeGetCardsController()));
+cardRoutes.get(
+	"/get-daily-card",
+	adaptElysiaRoute(makeGetDailyCardController()),
+);
+cardRoutes.get("/get-cards", adaptElysiaRoute(makeGetCardsController()));
