@@ -1,32 +1,33 @@
 {
-	"name": "yugiohdle",
-	"module": "src/main/server.ts",
-	"type": "module",
-	"devDependencies": {
-		"@biomejs/biome": "1.5.0",
-		"@types/bun": "latest",
-		"@types/pg": "^8.10.9",
-		"@vitest/coverage-v8": "^1.2.0",
-		"dotenv": "^16.3.1",
-		"drizzle-kit": "latest",
-		"git-commit-msg-linter": "^5.0.6",
-		"vitest": "^1.2.0"
-	},
-	"scripts": {
-		"dev": "bun --watch src/main/server.ts",
-		"test": "vitest",
-		"migrate:up": "tsx src/infra/repositories/drizzle/config/migrate.ts",
-		"studio": "bunx drizzle-kit studio"
-	},
-	"peerDependencies": {
-		"typescript": "^5.0.0"
-	},
-	"dependencies": {
-		"@elysiajs/cors": "^0.8.0",
-		"@elysiajs/cron": "^0.8.0",
-		"drizzle-orm": "^0.29.3",
-		"elysia": "^0.8.9",
-		"pg": "^8.11.3",
-		"redis": "^4.6.12"
-	}
+  "name": "yugiohdle",
+  "module": "src/main/server.ts",
+  "type": "module",
+  "devDependencies": {
+    "@biomejs/biome": "1.5.0",
+    "@types/bun": "latest",
+    "@types/pg": "^8.10.9",
+    "@vitest/coverage-v8": "^1.2.0",
+    "dotenv": "^16.3.1",
+    "drizzle-kit": "latest",
+    "git-commit-msg-linter": "^5.0.6",
+    "vitest": "^1.2.0",
+    "xlsx": "^0.18.5"
+  },
+  "scripts": {
+    "dev": "bun --watch src/main/server.ts",
+    "test": "vitest",
+    "migrate:up": "tsx src/infra/repositories/drizzle/config/migrate.ts",
+    "studio": "bunx drizzle-kit studio"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^0.8.0",
+    "@elysiajs/cron": "^0.8.0",
+    "drizzle-orm": "^0.29.3",
+    "elysia": "^0.8.9",
+    "pg": "^8.11.3",
+    "redis": "^4.6.12"
+  }
 }
