@@ -25,8 +25,8 @@ export class CardDrizzleRepository
 	}
 
 	async chooseCards(): Promise<SavedCard[]> {
-		const Cards = await db.select().from(card);
-		return Cards.map((card) => {
+		const cards = await db.select().from(card);
+		return cards.map((card) => {
 			return new SavedCard({
 				id: card.id,
 				name: card.name,
