@@ -5,7 +5,7 @@ export const card = pgTable("card", {
 	name: varchar("name", { length: 255 }).notNull(),
 	type: varchar("type", { length: 255 }).notNull(),
 	frameType: varchar("frameType", { length: 255 }).notNull(),
-	description: varchar("description", { length: 255 }).notNull(),
+	description: varchar("description", { length: 1080 }).notNull(),
 	atk: numeric("atk"),
 	def: numeric("def"),
 	level: numeric("level"),

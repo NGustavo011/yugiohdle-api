@@ -1,0 +1,1 @@
+ALTER TABLE "card" ALTER COLUMN "description" SET DATA TYPE varchar(1080);

@@ -15,6 +15,13 @@
       "when": 1704995908171,
       "tag": "0001_fresh_silverclaw",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1706028259917,
+      "tag": "0002_fast_blacklash",
+      "breakpoints": true
     }
   ]
 }
