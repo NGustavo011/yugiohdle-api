@@ -8,10 +8,14 @@ export const clearDatabase = async () => {
 	await db.delete(card);
 };
 
-export const insertCard = async (savedCard: SavedCard, available?: boolean) => {
+export const insertCard = async (
+	savedCard: SavedCard,
+	available?: boolean,
+	name?: string,
+) => {
 	const savedCardDto = savedCard.getDto();
 	const cardDb: CardDb = {
-		name: savedCardDto.name,
+		name: name ?? savedCardDto.name,
 		race: savedCardDto.race,
 		type: savedCardDto.type,
 		archetype: savedCardDto.archetype,

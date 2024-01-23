@@ -37,13 +37,14 @@ describe("CardDrizzle repository", () => {
 
 	describe("chooseCards()", () => {
 		test("Must return all existing cards", async () => {
-			await insertCard(mockSavedCard(), false);
-			await insertCard(mockSavedCard());
-			await insertCard(mockSavedCardWithPropsNull());
+			await insertCard(mockSavedCard(), false, "any_name_1");
+			await insertCard(mockSavedCard(), true, "any_name_3");
+			await insertCard(mockSavedCard(), false, "any_name_3");
+			await insertCard(mockSavedCardWithPropsNull(), true, "any_name_2");
 
 			const cards = await sut.chooseCards();
 
-			expect(cards).toHaveLength(3);
+			expect(cards).toHaveLength(4);
 		});
 	});
 

@@ -26,25 +26,35 @@ export class CardDrizzleRepository
 
 	async chooseCards(): Promise<SavedCard[]> {
 		const cards = await db.select().from(card);
-		return cards.map((card) => {
-			return new SavedCard({
-				id: card.id,
-				name: card.name,
-				race: card.race,
-				type: card.type,
-				archetype: card.archetype ? card.archetype : null,
-				attribute: card.attribute ? card.attribute : null,
-				description: card.description,
-				frameType: card.frameType,
-				imageUrl: card.imageUrl,
-				imageUrlSmall: card.imageUrlSmall,
-				imageUrlCropped: card.imageUrlCropped,
-				atk: Number(card.atk) ? Number(card.atk) : null,
-				def: Number(card.def) ? Number(card.def) : null,
-				level: Number(card.level) ? Number(card.level) : null,
-				available: card.available,
+		return cards
+			.map((card) => {
+				return new SavedCard({
+					id: card.id,
+					name: card.name,
+					race: card.race,
+					type: card.type,
+					archetype: card.archetype ? card.archetype : null,
+					attribute: card.attribute ? card.attribute : null,
+					description: card.description,
+					frameType: card.frameType,
+					imageUrl: card.imageUrl,
+					imageUrlSmall: card.imageUrlSmall,
+					imageUrlCropped: card.imageUrlCropped,
+					atk: Number(card.atk) ? Number(card.atk) : null,
+					def: Number(card.def) ? Number(card.def) : null,
+					level: Number(card.level) ? Number(card.level) : null,
+					available: card.available,
+				});
+			})
+			.sort((a, b) => {
+				if (a.getDto().name < b.getDto().name) {
+					return -1;
+				}
+				if (a.getDto().name > b.getDto().name) {
+					return 1;
+				}
+				return 0;
 			});
-		});
 	}
 
 	async chooseDailyCard(): Promise<SavedCard> {
