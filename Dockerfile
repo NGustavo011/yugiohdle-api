@@ -3,4 +3,4 @@ WORKDIR /app
 COPY . .
 RUN bun install --production
 RUN bun run build
-ENTRYPOINT [ "bun", "start" ]
+ENTRYPOINT [ "bun", "start:migration" ]

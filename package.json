@@ -17,10 +17,11 @@
 	"scripts": {
 		"dev": "bun --watch src/main/server.ts",
 		"test": "vitest",
-		"migrate:up": "tsx src/infra/repositories/drizzle/config/migrate.ts",
+		"migrate:up": "bun src/infra/repositories/drizzle/config/migrate.ts",
 		"studio": "bunx drizzle-kit studio",
 		"build": "bun build ./src/main/server.ts --target bun --outdir dist",
-		"start": "bun dist/server.js"
+		"start": "bun dist/server.js",
+		"start:migration": "bun run migrate:up && bun run start"
 	},
 	"peerDependencies": {
 		"typescript": "^5.0.0"
