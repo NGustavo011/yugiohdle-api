@@ -6,7 +6,7 @@ import { makeChangeDailyCardController } from "../factories/controllers/change-d
 export const changeDailyCardCron = new Elysia().use(
 	cron({
 		name: "change daily card",
-		pattern: "0 0 * * *",
+		pattern: "* * * * *",
 		run() {
 			adaptElysiaCron(makeChangeDailyCardController());
 		},
