@@ -5,8 +5,10 @@ import {
 } from "../../../../mocks/mock-card";
 import {
 	clearCache,
+	insertArtDailyCard,
 	insertCards,
 	insertClassicDailyCard,
+	receiveArtDailyCard,
 	receiveCards,
 	receiveClassicDailyCard,
 } from "../../../../mocks/mock-redis";
@@ -18,6 +20,35 @@ describe("CardRedis repository", () => {
 	beforeEach(async () => {
 		sut = new CardRedisRepository();
 		await clearCache();
+	});
+
+	describe("getArtDailyCard()", () => {
+		test("Should return a successful SavedCard marked as ArtDailyCard", async () => {
+			await insertArtDailyCard(mockSavedCard());
+
+			const dailyCard = await sut.getArtDailyCard();
+
+			expect(dailyCard.getDto().id).toBe(mockSavedCard().getDto().id);
+			expect(dailyCard.getDto().name).toBe(mockSavedCard().getDto().name);
+			expect(dailyCard.getDto().atk).toBe(mockSavedCard().getDto().atk);
+			expect(dailyCard.getDto().availableArtDailyCard).toBe(
+				mockSavedCard().getDto().availableArtDailyCard,
+			);
+		});
+
+		test("Should return a successful SavedCard with missing information marked as ArtDailyCard", async () => {
+			await insertArtDailyCard(mockSavedCardWithPropsNull());
+
+			const dailyCard = await sut.getArtDailyCard();
+
+			expect(dailyCard.getDto().id).toBe(mockSavedCard().getDto().id);
+			expect(dailyCard.getDto().name).toBe(mockSavedCard().getDto().name);
+			expect(dailyCard.getDto().attribute).toBeNull();
+			expect(dailyCard.getDto().atk).toBeNull();
+			expect(dailyCard.getDto().availableArtDailyCard).toBe(
+				mockSavedCardWithPropsNull().getDto().availableArtDailyCard,
+			);
+		});
 	});
 
 	describe("getCards()", () => {
@@ -56,6 +87,36 @@ describe("CardRedis repository", () => {
 			expect(dailyCard.getDto().atk).toBeNull();
 			expect(dailyCard.getDto().availableClassicDailyCard).toBe(
 				mockSavedCardWithPropsNull().getDto().availableClassicDailyCard,
+			);
+		});
+	});
+
+	describe("setArtDailyCard()", () => {
+		test("Must set a card available as ArtDailyCard", async () => {
+			await sut.setArtDailyCard(mockSavedCard());
+			const dailyCard = await receiveArtDailyCard();
+
+			expect(dailyCard.getDto().id).toBe(mockSavedCard().getDto().id);
+			expect(dailyCard.getDto().name).toBe(mockSavedCard().getDto().name);
+			expect(dailyCard.getDto().attribute).toBe(
+				mockSavedCard().getDto().attribute,
+			);
+			expect(dailyCard.getDto().atk).toBe(mockSavedCard().getDto().atk);
+			expect(dailyCard.getDto().availableArtDailyCard).toBe(
+				mockSavedCard().getDto().availableArtDailyCard,
+			);
+		});
+
+		test("Must define an available card with missing information as ArtDailyCard", async () => {
+			await sut.setArtDailyCard(mockSavedCardWithPropsNull());
+			const dailyCard = await receiveArtDailyCard();
+
+			expect(dailyCard.getDto().id).toBe(mockSavedCard().getDto().id);
+			expect(dailyCard.getDto().name).toBe(mockSavedCard().getDto().name);
+			expect(dailyCard.getDto().attribute).toBeNull();
+			expect(dailyCard.getDto().atk).toBeNull();
+			expect(dailyCard.getDto().availableArtDailyCard).toBe(
+				mockSavedCardWithPropsNull().getDto().availableArtDailyCard,
 			);
 		});
 	});

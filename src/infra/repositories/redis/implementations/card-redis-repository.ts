@@ -5,14 +5,43 @@ import type { SetClassicDailyCardRepository } from "../../../../contracts/infra/
 import env from "../../../../main/config/env";
 import type { GetCardsRepository } from "../../../../contracts/infra/repositories/cards/get-cards-repository";
 import type { SetCardsRepository } from "../../../../contracts/infra/repositories/cards/set-cards-repository";
+import type { GetArtDailyCard } from "../../../../domain/usecases/get-art-daily-card";
+import type { SetArtDailyCardRepository } from "../../../../contracts/infra/repositories/cards/set-art-daily-card-repository";
+import type { GetArtDailyCardRepository } from "../../../../contracts/infra/repositories/cards/get-art-daily-card-repository";
 
 export class CardRedisRepository
 	implements
+		GetArtDailyCardRepository,
 		GetCardsRepository,
 		GetClassicDailyCardRepository,
+		SetArtDailyCardRepository,
 		SetCardsRepository,
 		SetClassicDailyCardRepository
 {
+	async getArtDailyCard(): Promise<SavedCard> {
+		await redisClient.connect();
+		const dailyCard = await redisClient.hGetAll(env.cacheArtDailyCardKey);
+		await redisClient.disconnect();
+		return new SavedCard({
+			id: dailyCard.id,
+			name: dailyCard.name,
+			race: dailyCard.race,
+			type: dailyCard.type,
+			archetype: dailyCard.archetype ? dailyCard.archetype : null,
+			attribute: dailyCard.attribute ? dailyCard.attribute : null,
+			description: dailyCard.description,
+			frameType: dailyCard.frameType,
+			imageUrl: dailyCard.imageUrl,
+			imageUrlSmall: dailyCard.imageUrlSmall,
+			imageUrlCropped: dailyCard.imageUrlCropped,
+			atk: Number(dailyCard.atk) ? Number(dailyCard.atk) : null,
+			def: Number(dailyCard.def) ? Number(dailyCard.def) : null,
+			level: Number(dailyCard.level) ? Number(dailyCard.level) : null,
+			availableClassicDailyCard: Boolean(dailyCard.availableClassicDailyCard),
+			availableArtDailyCard: Boolean(dailyCard.availableArtDailyCard),
+		});
+	}
+
 	async getCards(): Promise<SavedCard[]> {
 		await redisClient.connect();
 		const redisCards = (await redisClient.get(env.cacheCardsKey)) as string;
@@ -35,6 +64,7 @@ export class CardRedisRepository
 				def: Number(card.def) ? Number(card.def) : null,
 				level: Number(card.level) ? Number(card.level) : null,
 				availableClassicDailyCard: Boolean(card.availableClassicDailyCard),
+				availableArtDailyCard: Boolean(card.availableArtDailyCard),
 			});
 		});
 	}
@@ -59,7 +89,33 @@ export class CardRedisRepository
 			def: Number(dailyCard.def) ? Number(dailyCard.def) : null,
 			level: Number(dailyCard.level) ? Number(dailyCard.level) : null,
 			availableClassicDailyCard: Boolean(dailyCard.availableClassicDailyCard),
+			availableArtDailyCard: Boolean(dailyCard.availableArtDailyCard),
 		});
+	}
+
+	async setArtDailyCard(dailyCard: SavedCard): Promise<void> {
+		await redisClient.connect();
+		await redisClient.del(env.cacheArtDailyCardKey);
+		const dailyCardDto = dailyCard.getDto();
+		await redisClient.hSet(env.cacheArtDailyCardKey, {
+			id: dailyCardDto.id,
+			name: dailyCardDto.name,
+			race: dailyCardDto.race,
+			type: dailyCardDto.type,
+			archetype: dailyCardDto.archetype ?? "",
+			attribute: dailyCardDto.attribute ?? "",
+			description: dailyCardDto.description,
+			frameType: dailyCardDto.frameType,
+			imageUrl: dailyCardDto.imageUrl,
+			imageUrlSmall: dailyCardDto.imageUrlSmall,
+			imageUrlCropped: dailyCardDto.imageUrlCropped,
+			atk: dailyCardDto.atk ?? 0,
+			def: dailyCardDto.def ?? 0,
+			level: dailyCardDto.level ?? 0,
+			availableClassicDailyCard: String(dailyCardDto.availableClassicDailyCard),
+			availableArtDailyCard: String(dailyCardDto.availableArtDailyCard),
+		});
+		await redisClient.disconnect();
 	}
 
 	async setCards(cards: SavedCard[]): Promise<void> {
@@ -93,6 +149,7 @@ export class CardRedisRepository
 			def: dailyCardDto.def ?? 0,
 			level: dailyCardDto.level ?? 0,
 			availableClassicDailyCard: String(dailyCardDto.availableClassicDailyCard),
+			availableArtDailyCard: String(dailyCardDto.availableArtDailyCard),
 		});
 		await redisClient.disconnect();
 	}

@@ -1,5 +1,7 @@
 import { pgTable, uuid, varchar, numeric, boolean } from "drizzle-orm/pg-core";
 
+export type Modes = "availableClassicDailyCard" | "availableArtDailyCard";
+
 export const card = pgTable("card", {
 	id: uuid("id").primaryKey().defaultRandom(),
 	name: varchar("name", { length: 255 }).notNull(),
@@ -16,4 +18,5 @@ export const card = pgTable("card", {
 	imageUrlSmall: varchar("imageUrlSmall", { length: 255 }).notNull(),
 	imageUrlCropped: varchar("imageUrlCropped", { length: 255 }).notNull(),
 	availableClassicDailyCard: boolean("availableClassicDailyCard"),
+	availableArtDailyCard: boolean("availableArtDailyCard"),
 });

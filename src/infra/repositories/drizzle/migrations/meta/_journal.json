@@ -29,6 +29,13 @@
       "when": 1706725061568,
       "tag": "0003_freezing_proudstar",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1706727049705,
+      "tag": "0004_watery_big_bertha",
+      "breakpoints": true
     }
   ]
 }

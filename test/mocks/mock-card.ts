@@ -17,6 +17,7 @@ export const mockSavedCard = (): SavedCard => {
 		def: 10,
 		level: 10,
 		availableClassicDailyCard: true,
+		availableArtDailyCard: true,
 	});
 };
 
@@ -37,5 +38,6 @@ export const mockSavedCardWithPropsNull = (): SavedCard => {
 		def: null,
 		level: null,
 		availableClassicDailyCard: true,
+		availableArtDailyCard: true,
 	});
 };

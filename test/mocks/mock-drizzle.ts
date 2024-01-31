@@ -1,6 +1,9 @@
 import type { SavedCard } from "../../src/domain/entities/card";
 import { db } from "../../src/infra/repositories/drizzle/config/connection";
-import { card } from "../../src/infra/repositories/drizzle/schemas/card";
+import {
+	card,
+	type Modes,
+} from "../../src/infra/repositories/drizzle/schemas/card";
 
 type CardDb = typeof card.$inferInsert;
 
@@ -10,7 +13,8 @@ export const clearDatabase = async () => {
 
 export const insertCard = async (
 	savedCard: SavedCard,
-	availableClassicDailyCard?: boolean,
+	mode: Modes,
+	available?: boolean,
 	name?: string,
 ) => {
 	const savedCardDto = savedCard.getDto();
@@ -28,7 +32,7 @@ export const insertCard = async (
 		atk: savedCardDto.atk ? savedCardDto.atk.toString() : "0",
 		def: savedCardDto.def ? savedCardDto.def.toString() : "0",
 		level: savedCardDto.level ? savedCardDto.level.toString() : "0",
-		availableClassicDailyCard: availableClassicDailyCard ?? true,
+		[mode]: available ?? true,
 	};
 	const cardCreated = await db.insert(card).values(cardDb).returning();
 	return cardCreated[0].id;
