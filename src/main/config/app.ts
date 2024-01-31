@@ -2,7 +2,7 @@ import cors from "@elysiajs/cors";
 import Elysia from "elysia";
 import { cardRoutes } from "../routes/card-routes";
 import { changeDailyCardCron } from "../cron-jobs/change-daily-card-cron";
-import { healthCheckRoutes } from "../routes/health-check";
+import { healthCheckRoutes } from "../routes/health-check-routes";
 
 export const app = new Elysia();
 app.use(cors());

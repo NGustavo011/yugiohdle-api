@@ -13,7 +13,7 @@ export default defineConfig({
 				"src/application/helpers/**/*.ts",
 				"src/main/adapters/*.ts",
 				"src/main/server.ts",
-				"src/main/**/change-daily-card*.ts",
+				"src/main/**/change*-daily-card*.ts",
 			],
 			include: ["src"],
 		},
