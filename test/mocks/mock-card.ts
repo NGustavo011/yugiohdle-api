@@ -16,7 +16,7 @@ export const mockSavedCard = (): SavedCard => {
 		atk: 10,
 		def: 10,
 		level: 10,
-		available: true,
+		availableClassicDailyCard: true,
 	});
 };
 
@@ -36,6 +36,6 @@ export const mockSavedCardWithPropsNull = (): SavedCard => {
 		atk: null,
 		def: null,
 		level: null,
-		available: true,
+		availableClassicDailyCard: true,
 	});
 };

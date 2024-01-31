@@ -15,5 +15,5 @@ export const card = pgTable("card", {
 	imageUrl: varchar("imageUrl", { length: 255 }).notNull(),
 	imageUrlSmall: varchar("imageUrlSmall", { length: 255 }).notNull(),
 	imageUrlCropped: varchar("imageUrlCropped", { length: 255 }).notNull(),
-	available: boolean("available"),
+	availableClassicDailyCard: boolean("availableClassicDailyCard"),
 });

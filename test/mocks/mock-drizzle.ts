@@ -10,7 +10,7 @@ export const clearDatabase = async () => {
 
 export const insertCard = async (
 	savedCard: SavedCard,
-	available?: boolean,
+	availableClassicDailyCard?: boolean,
 	name?: string,
 ) => {
 	const savedCardDto = savedCard.getDto();
@@ -28,7 +28,7 @@ export const insertCard = async (
 		atk: savedCardDto.atk ? savedCardDto.atk.toString() : "0",
 		def: savedCardDto.def ? savedCardDto.def.toString() : "0",
 		level: savedCardDto.level ? savedCardDto.level.toString() : "0",
-		available: available ?? true,
+		availableClassicDailyCard: availableClassicDailyCard ?? true,
 	};
 	const cardCreated = await db.insert(card).values(cardDb).returning();
 	return cardCreated[0].id;

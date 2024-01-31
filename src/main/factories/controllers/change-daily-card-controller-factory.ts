@@ -1,8 +1,10 @@
 import { ChangeDailyCardController } from "../../../application/controllers/change-daily-card-controller";
 import type { Controller } from "../../../contracts/application/controllers/controller";
-import { makeChangeDailyCard } from "../usecases/change-daily-card-factory";
+import { makeChangeClassicDailyCard } from "../usecases/change-classic-daily-card-factory";
 
 export const makeChangeDailyCardController = (): Controller => {
-	const controller = new ChangeDailyCardController(makeChangeDailyCard());
+	const controller = new ChangeDailyCardController(
+		makeChangeClassicDailyCard(),
+	);
 	return controller;
 };

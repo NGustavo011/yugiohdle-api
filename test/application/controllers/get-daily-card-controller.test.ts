@@ -22,14 +22,14 @@ const mockRequest = (): HttpRequest => {
 };
 
 describe("GetDailyCard Controller", () => {
-	let getDailyCardUsecase: {
+	let getClassicDailyCardUsecase: {
 		execute: Mock;
 	};
 	let sut: GetDailyCardController;
 	const original = console.log;
 
 	beforeAll(() => {
-		getDailyCardUsecase = {
+		getClassicDailyCardUsecase = {
 			execute: vi.fn().mockImplementation(() => {
 				return mockSavedCard();
 			}),
@@ -39,7 +39,7 @@ describe("GetDailyCard Controller", () => {
 	beforeEach(() => {
 		console.log = vi.fn();
 		vi.clearAllMocks();
-		sut = new GetDailyCardController(getDailyCardUsecase);
+		sut = new GetDailyCardController(getClassicDailyCardUsecase);
 	});
 	afterEach(() => {
 		console.log = original;
@@ -49,10 +49,10 @@ describe("GetDailyCard Controller", () => {
 		test("Should call GetDailyCard correctly", async () => {
 			await sut.execute(mockRequest());
 
-			expect(getDailyCardUsecase.execute).toHaveBeenCalled();
+			expect(getClassicDailyCardUsecase.execute).toHaveBeenCalled();
 		});
 		test("Should return 500 if GetDailyCard throws an exception", async () => {
-			getDailyCardUsecase.execute.mockImplementationOnce(throwError);
+			getClassicDailyCardUsecase.execute.mockImplementationOnce(throwError);
 
 			const httpResponse = await sut.execute(mockRequest());
 

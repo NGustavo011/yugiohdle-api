@@ -1,5 +1,5 @@
 import type { SavedCard } from "../../../domain/entities/card";
 
-export interface GetDailyCardContract {
+export interface GetClassicDailyCardContract {
 	execute(): Promise<SavedCard>;
 }

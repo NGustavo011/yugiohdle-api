@@ -13,7 +13,7 @@ export type CardType = {
 	imageUrl: string;
 	imageUrlSmall: string;
 	imageUrlCropped: string;
-	available: boolean;
+	availableClassicDailyCard: boolean;
 };
 
 type CardInput = {
@@ -32,7 +32,10 @@ type CardInput = {
 	imageUrlCropped: string;
 };
 
-type SavedCardInput = CardInput & { id: string; available: boolean | null };
+type SavedCardInput = CardInput & {
+	id: string;
+	availableClassicDailyCard: boolean | null;
+};
 
 export class Card {
 	private readonly name: string;
@@ -86,20 +89,20 @@ export class Card {
 
 export class SavedCard extends Card {
 	private readonly id: string;
-	private readonly available: boolean | null;
+	private readonly availableClassicDailyCard: boolean | null;
 
 	constructor(input: SavedCardInput) {
-		const { id, available, ...rest } = input;
+		const { id, availableClassicDailyCard, ...rest } = input;
 		super(rest);
 		this.id = id;
-		this.available = available;
+		this.availableClassicDailyCard = availableClassicDailyCard;
 	}
 
 	getDto() {
 		return {
 			...super.getDto(),
 			id: this.id,
-			available: this.available,
+			availableClassicDailyCard: this.availableClassicDailyCard,
 		};
 	}
 }

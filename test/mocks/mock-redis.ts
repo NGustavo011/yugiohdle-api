@@ -5,7 +5,7 @@ import { mockSavedCard, mockSavedCardWithPropsNull } from "./mock-card";
 
 export const clearCache = async () => {
 	await redisClient.connect();
-	await redisClient.del(env.cacheDailyCardKey);
+	await redisClient.del(env.cacheClassicDailyCardKey);
 	await redisClient.disconnect();
 };
 
@@ -19,10 +19,10 @@ export const insertCards = async () => {
 	await redisClient.disconnect();
 };
 
-export const insertDailyCard = async (dailyCard: SavedCard) => {
+export const insertClassicDailyCard = async (dailyCard: SavedCard) => {
 	await redisClient.connect();
 	const dailyCardDto = dailyCard.getDto();
-	await redisClient.hSet(env.cacheDailyCardKey, {
+	await redisClient.hSet(env.cacheClassicDailyCardKey, {
 		id: dailyCardDto.id,
 		name: dailyCardDto.name,
 		race: dailyCardDto.race,
@@ -37,7 +37,7 @@ export const insertDailyCard = async (dailyCard: SavedCard) => {
 		atk: dailyCardDto.atk ?? 0,
 		def: dailyCardDto.def ?? 0,
 		level: dailyCardDto.level ?? 0,
-		available: String(dailyCardDto.available),
+		availableClassicDailyCard: String(dailyCardDto.availableClassicDailyCard),
 	});
 	await redisClient.disconnect();
 };
@@ -63,14 +63,14 @@ export const receiveCards = async (): Promise<SavedCard[]> => {
 			atk: Number(card.atk) ? Number(card.atk) : null,
 			def: Number(card.def) ? Number(card.def) : null,
 			level: Number(card.level) ? Number(card.level) : null,
-			available: Boolean(card.available),
+			availableClassicDailyCard: Boolean(card.availableClassicDailyCard),
 		});
 	});
 };
 
-export const receiveDailyCard = async (): Promise<SavedCard> => {
+export const receiveClassicDailyCard = async (): Promise<SavedCard> => {
 	await redisClient.connect();
-	const dailyCard = await redisClient.hGetAll(env.cacheDailyCardKey);
+	const dailyCard = await redisClient.hGetAll(env.cacheClassicDailyCardKey);
 	await redisClient.disconnect();
 	return new SavedCard({
 		id: dailyCard.id,
@@ -87,6 +87,6 @@ export const receiveDailyCard = async (): Promise<SavedCard> => {
 		atk: Number(dailyCard.atk) ? Number(dailyCard.atk) : null,
 		def: Number(dailyCard.def) ? Number(dailyCard.def) : null,
 		level: Number(dailyCard.level) ? Number(dailyCard.level) : null,
-		available: Boolean(dailyCard.available),
+		availableClassicDailyCard: Boolean(dailyCard.availableClassicDailyCard),
 	});
 };

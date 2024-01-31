@@ -6,9 +6,9 @@ import {
 import {
 	clearCache,
 	insertCards,
-	insertDailyCard,
+	insertClassicDailyCard,
 	receiveCards,
-	receiveDailyCard,
+	receiveClassicDailyCard,
 } from "../../../../mocks/mock-redis";
 import { CardRedisRepository } from "../../../../../src/infra/repositories/redis/implementations/card-redis-repository";
 
@@ -31,31 +31,31 @@ describe("CardRedis repository", () => {
 		});
 	});
 
-	describe("getDailyCard()", () => {
-		test("Should return a successful SavedCard marked as DailyCard", async () => {
-			await insertDailyCard(mockSavedCard());
+	describe("getClassicDailyCard()", () => {
+		test("Should return a successful SavedCard marked as ClassicDailyCard", async () => {
+			await insertClassicDailyCard(mockSavedCard());
 
-			const dailyCard = await sut.getDailyCard();
+			const dailyCard = await sut.getClassicDailyCard();
 
 			expect(dailyCard.getDto().id).toBe(mockSavedCard().getDto().id);
 			expect(dailyCard.getDto().name).toBe(mockSavedCard().getDto().name);
 			expect(dailyCard.getDto().atk).toBe(mockSavedCard().getDto().atk);
-			expect(dailyCard.getDto().available).toBe(
-				mockSavedCard().getDto().available,
+			expect(dailyCard.getDto().availableClassicDailyCard).toBe(
+				mockSavedCard().getDto().availableClassicDailyCard,
 			);
 		});
 
-		test("Should return a successful SavedCard with missing information marked as DailyCard", async () => {
-			await insertDailyCard(mockSavedCardWithPropsNull());
+		test("Should return a successful SavedCard with missing information marked as ClassicDailyCard", async () => {
+			await insertClassicDailyCard(mockSavedCardWithPropsNull());
 
-			const dailyCard = await sut.getDailyCard();
+			const dailyCard = await sut.getClassicDailyCard();
 
 			expect(dailyCard.getDto().id).toBe(mockSavedCard().getDto().id);
 			expect(dailyCard.getDto().name).toBe(mockSavedCard().getDto().name);
 			expect(dailyCard.getDto().attribute).toBeNull();
 			expect(dailyCard.getDto().atk).toBeNull();
-			expect(dailyCard.getDto().available).toBe(
-				mockSavedCardWithPropsNull().getDto().available,
+			expect(dailyCard.getDto().availableClassicDailyCard).toBe(
+				mockSavedCardWithPropsNull().getDto().availableClassicDailyCard,
 			);
 		});
 	});
@@ -71,10 +71,10 @@ describe("CardRedis repository", () => {
 		});
 	});
 
-	describe("setDailyCard()", () => {
-		test("Must set a card available as DailyCard", async () => {
-			await sut.setDailyCard(mockSavedCard());
-			const dailyCard = await receiveDailyCard();
+	describe("setClassicDailyCard()", () => {
+		test("Must set a card available as ClassicDailyCard", async () => {
+			await sut.setClassicDailyCard(mockSavedCard());
+			const dailyCard = await receiveClassicDailyCard();
 
 			expect(dailyCard.getDto().id).toBe(mockSavedCard().getDto().id);
 			expect(dailyCard.getDto().name).toBe(mockSavedCard().getDto().name);
@@ -82,21 +82,21 @@ describe("CardRedis repository", () => {
 				mockSavedCard().getDto().attribute,
 			);
 			expect(dailyCard.getDto().atk).toBe(mockSavedCard().getDto().atk);
-			expect(dailyCard.getDto().available).toBe(
-				mockSavedCard().getDto().available,
+			expect(dailyCard.getDto().availableClassicDailyCard).toBe(
+				mockSavedCard().getDto().availableClassicDailyCard,
 			);
 		});
 
-		test("Must define an available card with missing information as DailyCard", async () => {
-			await sut.setDailyCard(mockSavedCardWithPropsNull());
-			const dailyCard = await receiveDailyCard();
+		test("Must define an available card with missing information as ClassicDailyCard", async () => {
+			await sut.setClassicDailyCard(mockSavedCardWithPropsNull());
+			const dailyCard = await receiveClassicDailyCard();
 
 			expect(dailyCard.getDto().id).toBe(mockSavedCard().getDto().id);
 			expect(dailyCard.getDto().name).toBe(mockSavedCard().getDto().name);
 			expect(dailyCard.getDto().attribute).toBeNull();
 			expect(dailyCard.getDto().atk).toBeNull();
-			expect(dailyCard.getDto().available).toBe(
-				mockSavedCardWithPropsNull().getDto().available,
+			expect(dailyCard.getDto().availableClassicDailyCard).toBe(
+				mockSavedCardWithPropsNull().getDto().availableClassicDailyCard,
 			);
 		});
 	});

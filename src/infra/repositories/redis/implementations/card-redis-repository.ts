@@ -1,7 +1,7 @@
 import { redisClient } from "../config/connection";
 import { SavedCard, type CardType } from "../../../../domain/entities/card";
-import type { GetDailyCardRepository } from "../../../../contracts/infra/repositories/cards/get-daily-card-repository";
-import type { SetDailyCardRepository } from "../../../../contracts/infra/repositories/cards/set-daily-card-repository";
+import type { GetClassicDailyCardRepository } from "../../../../contracts/infra/repositories/cards/get-classic-daily-card-repository";
+import type { SetClassicDailyCardRepository } from "../../../../contracts/infra/repositories/cards/set-classic-daily-card-repository";
 import env from "../../../../main/config/env";
 import type { GetCardsRepository } from "../../../../contracts/infra/repositories/cards/get-cards-repository";
 import type { SetCardsRepository } from "../../../../contracts/infra/repositories/cards/set-cards-repository";
@@ -9,9 +9,9 @@ import type { SetCardsRepository } from "../../../../contracts/infra/repositorie
 export class CardRedisRepository
 	implements
 		GetCardsRepository,
-		GetDailyCardRepository,
+		GetClassicDailyCardRepository,
 		SetCardsRepository,
-		SetDailyCardRepository
+		SetClassicDailyCardRepository
 {
 	async getCards(): Promise<SavedCard[]> {
 		await redisClient.connect();
@@ -34,14 +34,14 @@ export class CardRedisRepository
 				atk: Number(card.atk) ? Number(card.atk) : null,
 				def: Number(card.def) ? Number(card.def) : null,
 				level: Number(card.level) ? Number(card.level) : null,
-				available: Boolean(card.available),
+				availableClassicDailyCard: Boolean(card.availableClassicDailyCard),
 			});
 		});
 	}
 
-	async getDailyCard(): Promise<SavedCard> {
+	async getClassicDailyCard(): Promise<SavedCard> {
 		await redisClient.connect();
-		const dailyCard = await redisClient.hGetAll(env.cacheDailyCardKey);
+		const dailyCard = await redisClient.hGetAll(env.cacheClassicDailyCardKey);
 		await redisClient.disconnect();
 		return new SavedCard({
 			id: dailyCard.id,
@@ -58,7 +58,7 @@ export class CardRedisRepository
 			atk: Number(dailyCard.atk) ? Number(dailyCard.atk) : null,
 			def: Number(dailyCard.def) ? Number(dailyCard.def) : null,
 			level: Number(dailyCard.level) ? Number(dailyCard.level) : null,
-			available: Boolean(dailyCard.available),
+			availableClassicDailyCard: Boolean(dailyCard.availableClassicDailyCard),
 		});
 	}
 
@@ -73,11 +73,11 @@ export class CardRedisRepository
 		await redisClient.disconnect();
 	}
 
-	async setDailyCard(dailyCard: SavedCard): Promise<void> {
+	async setClassicDailyCard(dailyCard: SavedCard): Promise<void> {
 		await redisClient.connect();
-		await redisClient.del(env.cacheDailyCardKey);
+		await redisClient.del(env.cacheClassicDailyCardKey);
 		const dailyCardDto = dailyCard.getDto();
-		await redisClient.hSet(env.cacheDailyCardKey, {
+		await redisClient.hSet(env.cacheClassicDailyCardKey, {
 			id: dailyCardDto.id,
 			name: dailyCardDto.name,
 			race: dailyCardDto.race,
@@ -92,7 +92,7 @@ export class CardRedisRepository
 			atk: dailyCardDto.atk ?? 0,
 			def: dailyCardDto.def ?? 0,
 			level: dailyCardDto.level ?? 0,
-			available: String(dailyCardDto.available),
+			availableClassicDailyCard: String(dailyCardDto.availableClassicDailyCard),
 		});
 		await redisClient.disconnect();
 	}

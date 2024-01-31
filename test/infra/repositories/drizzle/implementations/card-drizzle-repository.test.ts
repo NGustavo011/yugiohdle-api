@@ -17,11 +17,11 @@ describe("CardDrizzle repository", () => {
 		await clearDatabase();
 	});
 
-	describe("checkAvailableDailyCards()", () => {
+	describe("checkAvailableClassicDailyCards()", () => {
 		test("It should return false if it doesn't find any available cards", async () => {
 			await insertCard(mockSavedCard(), false);
 
-			const areCardsAvailable = await sut.checkAvailableDailyCards();
+			const areCardsAvailable = await sut.checkAvailableClassicDailyCards();
 
 			expect(areCardsAvailable).toBeFalsy();
 		});
@@ -29,7 +29,7 @@ describe("CardDrizzle repository", () => {
 		test("It should return true if find any available cards", async () => {
 			await insertCard(mockSavedCard());
 
-			const areCardsAvailable = await sut.checkAvailableDailyCards();
+			const areCardsAvailable = await sut.checkAvailableClassicDailyCards();
 
 			expect(areCardsAvailable).toBeTruthy();
 		});
@@ -48,22 +48,22 @@ describe("CardDrizzle repository", () => {
 		});
 	});
 
-	describe("chooseDailyCard()", () => {
+	describe("chooseClassicDailyCard()", () => {
 		test("Should return an available card and update it at the db to become unavailable", async () => {
 			await insertCard(mockSavedCard(), false);
 			await insertCard(mockSavedCard());
 			await insertCard(mockSavedCard());
 
-			const dailyCard = await sut.chooseDailyCard();
+			const dailyCard = await sut.chooseClassicDailyCard();
 			const dailyCardInDb = await db
 				.select()
 				.from(card)
 				.where(eq(card.id, dailyCard.getDto().id));
 
 			expect(dailyCard).toBeTruthy();
-			expect(dailyCard.getDto().available).toBeTruthy();
+			expect(dailyCard.getDto().availableClassicDailyCard).toBeTruthy();
 			expect(dailyCardInDb[0].id).toBe(dailyCard.getDto().id);
-			expect(dailyCardInDb[0].available).toBeFalsy();
+			expect(dailyCardInDb[0].availableClassicDailyCard).toBeFalsy();
 		});
 
 		test("Should return an available card with missing information and update it at the db to become unavailable", async () => {
@@ -71,30 +71,30 @@ describe("CardDrizzle repository", () => {
 			await insertCard(mockSavedCardWithPropsNull());
 			await insertCard(mockSavedCardWithPropsNull());
 
-			const dailyCard = await sut.chooseDailyCard();
+			const dailyCard = await sut.chooseClassicDailyCard();
 			const dailyCardInDb = await db
 				.select()
 				.from(card)
 				.where(eq(card.id, dailyCard.getDto().id));
 
 			expect(dailyCard).toBeTruthy();
-			expect(dailyCard.getDto().available).toBeTruthy();
+			expect(dailyCard.getDto().availableClassicDailyCard).toBeTruthy();
 			expect(dailyCardInDb[0].id).toBe(dailyCard.getDto().id);
-			expect(dailyCardInDb[0].available).toBeFalsy();
+			expect(dailyCardInDb[0].availableClassicDailyCard).toBeFalsy();
 		});
 	});
 
-	describe("refreshAvailableDailyCards", () => {
+	describe("refreshAvailableClassicDailyCards", () => {
 		test("Must update the available column of all existing cards", async () => {
 			await insertCard(mockSavedCard(), false);
 			await insertCard(mockSavedCard());
 			await insertCard(mockSavedCardWithPropsNull(), false);
 
-			await sut.refreshAvailableDailyCards();
+			await sut.refreshAvailableClassicDailyCards();
 			const availableCards = await db
 				.select()
 				.from(card)
-				.where(eq(card.available, true));
+				.where(eq(card.availableClassicDailyCard, true));
 
 			expect(availableCards).toHaveLength(3);
 		});
