@@ -13,6 +13,7 @@ import type { SetCardsRepository } from "../../../../contracts/infra/repositorie
 const modeKeys: { [key in Modes]: string } = {
 	availableArtDailyCard: env.cacheArtDailyCardKey,
 	availableClassicDailyCard: env.cacheClassicDailyCardKey,
+	availableDescriptionDailyCard: env.cacheDescriptionDailyCardKey,
 };
 
 export class CardRedisRepository
@@ -45,6 +46,9 @@ export class CardRedisRepository
 				level: Number(card.level) ? Number(card.level) : null,
 				availableClassicDailyCard: Boolean(card.availableClassicDailyCard),
 				availableArtDailyCard: Boolean(card.availableArtDailyCard),
+				availableDescriptionDailyCard: Boolean(
+					card.availableDescriptionDailyCard,
+				),
 			});
 		});
 	}
@@ -70,6 +74,9 @@ export class CardRedisRepository
 			level: Number(dailyCard.level) ? Number(dailyCard.level) : null,
 			availableClassicDailyCard: Boolean(dailyCard.availableClassicDailyCard),
 			availableArtDailyCard: Boolean(dailyCard.availableArtDailyCard),
+			availableDescriptionDailyCard: Boolean(
+				dailyCard.availableDescriptionDailyCard,
+			),
 		});
 	}
 

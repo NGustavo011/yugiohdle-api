@@ -1,0 +1,128 @@
+{
+  "id": "ab7f43c8-78e8-4e02-9818-6d0c005a2045",
+  "prevId": "d3e4ddb0-2e4c-4df9-8bce-aa7fab03289c",
+  "version": "5",
+  "dialect": "pg",
+  "tables": {
+    "card": {
+      "name": "card",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "frameType": {
+          "name": "frameType",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "varchar(1080)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "atk": {
+          "name": "atk",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "def": {
+          "name": "def",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "level": {
+          "name": "level",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "race": {
+          "name": "race",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "attribute": {
+          "name": "attribute",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "archetype": {
+          "name": "archetype",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "imageUrl": {
+          "name": "imageUrl",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "imageUrlSmall": {
+          "name": "imageUrlSmall",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "imageUrlCropped": {
+          "name": "imageUrlCropped",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "availableClassicDailyCard": {
+          "name": "availableClassicDailyCard",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "availableArtDailyCard": {
+          "name": "availableArtDailyCard",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "availableDescriptionDailyCard": {
+          "name": "availableDescriptionDailyCard",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}

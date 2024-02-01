@@ -17,4 +17,5 @@ export const card = pgTable("card", {
 	imageUrlCropped: varchar("imageUrlCropped", { length: 255 }).notNull(),
 	availableClassicDailyCard: boolean("availableClassicDailyCard"),
 	availableArtDailyCard: boolean("availableArtDailyCard"),
+	availableDescriptionDailyCard: boolean("availableDescriptionDailyCard"),
 });

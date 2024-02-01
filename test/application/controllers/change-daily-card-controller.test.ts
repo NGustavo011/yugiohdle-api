@@ -27,6 +27,9 @@ describe("ChangeDailyCard Controller", () => {
 	let changeClassicDailyCardUsecase: {
 		execute: Mock;
 	};
+	let changeDescriptionDailyCardUsecase: {
+		execute: Mock;
+	};
 	let sut: ChangeDailyCardController;
 	const original = console.log;
 
@@ -41,6 +44,11 @@ describe("ChangeDailyCard Controller", () => {
 				return;
 			}),
 		};
+		changeDescriptionDailyCardUsecase = {
+			execute: vi.fn().mockImplementation(() => {
+				return;
+			}),
+		};
 	});
 
 	beforeEach(() => {
@@ -49,6 +57,7 @@ describe("ChangeDailyCard Controller", () => {
 		sut = new ChangeDailyCardController(
 			changeArtDailyCardUsecase,
 			changeClassicDailyCardUsecase,
+			changeDescriptionDailyCardUsecase,
 		);
 	});
 
@@ -78,6 +87,22 @@ describe("ChangeDailyCard Controller", () => {
 		});
 		test("Should return 500 if ChangeClassicDailyCard throws an exception", async () => {
 			changeClassicDailyCardUsecase.execute.mockImplementationOnce(throwError);
+
+			const httpResponse = await sut.execute(mockRequest());
+
+			expect(httpResponse).toEqual(serverError(new Error()));
+		});
+	});
+	describe("ChangeDescriptionDailyCard dependency", () => {
+		test("Should call ChangeDescriptionDailyCard correctly", async () => {
+			await sut.execute(mockRequest());
+
+			expect(changeDescriptionDailyCardUsecase.execute).toHaveBeenCalled();
+		});
+		test("Should return 500 if ChangeDescriptionDailyCard throws an exception", async () => {
+			changeDescriptionDailyCardUsecase.execute.mockImplementationOnce(
+				throwError,
+			);
 
 			const httpResponse = await sut.execute(mockRequest());
 

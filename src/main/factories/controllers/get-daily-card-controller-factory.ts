@@ -2,11 +2,13 @@ import { GetDailyCardController } from "../../../application/controllers/get-dai
 import type { Controller } from "../../../contracts/application/controllers/controller";
 import { makeGetArtDailyCard } from "../usecases/get-art-daily-card-factory";
 import { makeGetClassicDailyCard } from "../usecases/get-classic-daily-card-factory";
+import { makeGetDescriptionDailyCard } from "../usecases/get-description-daily-card-factory";
 
 export const makeGetDailyCardController = (): Controller => {
 	const controller = new GetDailyCardController(
 		makeGetArtDailyCard(),
 		makeGetClassicDailyCard(),
+		makeGetDescriptionDailyCard(),
 	);
 	return controller;
 };

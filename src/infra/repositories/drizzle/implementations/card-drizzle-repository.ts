@@ -44,6 +44,7 @@ export class CardDrizzleRepository
 					level: Number(card.level) ? Number(card.level) : null,
 					availableClassicDailyCard: card.availableClassicDailyCard,
 					availableArtDailyCard: card.availableArtDailyCard,
+					availableDescriptionDailyCard: card.availableDescriptionDailyCard,
 				});
 			})
 			.sort((a, b) => {
@@ -82,6 +83,7 @@ export class CardDrizzleRepository
 			level: Number(dailyCard.level) ? Number(dailyCard.level) : null,
 			availableClassicDailyCard: dailyCard.availableClassicDailyCard,
 			availableArtDailyCard: dailyCard.availableArtDailyCard,
+			availableDescriptionDailyCard: dailyCard.availableDescriptionDailyCard,
 		});
 	}
 

@@ -28,6 +28,9 @@ describe("GetDailyCard Controller", () => {
 	let getClassicDailyCardUsecase: {
 		execute: Mock;
 	};
+	let getDescriptionDailyCardUsecase: {
+		execute: Mock;
+	};
 	let sut: GetDailyCardController;
 	const original = console.log;
 
@@ -42,6 +45,11 @@ describe("GetDailyCard Controller", () => {
 				return mockSavedCard();
 			}),
 		};
+		getDescriptionDailyCardUsecase = {
+			execute: vi.fn().mockImplementation(() => {
+				return mockSavedCard();
+			}),
+		};
 	});
 
 	beforeEach(() => {
@@ -50,6 +58,7 @@ describe("GetDailyCard Controller", () => {
 		sut = new GetDailyCardController(
 			getArtDailyCardUsecase,
 			getClassicDailyCardUsecase,
+			getDescriptionDailyCardUsecase,
 		);
 	});
 	afterEach(() => {
@@ -84,6 +93,20 @@ describe("GetDailyCard Controller", () => {
 			expect(httpResponse).toEqual(serverError(new Error()));
 		});
 	});
+	describe("GetDescriptionDailyCard dependency", () => {
+		test("Should call GetDescriptionDailyCard correctly", async () => {
+			await sut.execute(mockRequest());
+
+			expect(getDescriptionDailyCardUsecase.execute).toHaveBeenCalled();
+		});
+		test("Should return 500 if GetDescriptionDailyCard throws an exception", async () => {
+			getDescriptionDailyCardUsecase.execute.mockImplementationOnce(throwError);
+
+			const httpResponse = await sut.execute(mockRequest());
+
+			expect(httpResponse).toEqual(serverError(new Error()));
+		});
+	});
 	test("Should return status 200 if there are no problems", async () => {
 		const httpResponse = await sut.execute(mockRequest());
 
@@ -91,6 +114,7 @@ describe("GetDailyCard Controller", () => {
 			ok({
 				classic: mockSavedCard(),
 				art: mockSavedCard(),
+				description: mockSavedCard(),
 			}),
 		);
 	});
