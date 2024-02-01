@@ -1,30 +1,36 @@
 import type { ChangeClassicDailyCardContract } from "../../contracts/domain/usecases/change-classic-daily-card-contract";
-import type { CheckAvailableClassicDailyCardsRepository } from "../../contracts/infra/repositories/cards/check-available-classic-daily-cards-repository";
+import type { CheckAvailableDailyCardsRepository } from "../../contracts/infra/repositories/cards/check-available-daily-cards-repository";
 import type { ChooseCardsRepository } from "../../contracts/infra/repositories/cards/choose-cards-repository";
-import type { ChooseClassicDailyCardRepository } from "../../contracts/infra/repositories/cards/choose-classic-daily-card-repository";
-import type { RefreshAvailableClassicDailyCardsRepository } from "../../contracts/infra/repositories/cards/refresh-available-classic-daily-cards-repository";
+import type { ChooseDailyCardRepository } from "../../contracts/infra/repositories/cards/choose-daily-card-repository";
+import type { RefreshAvailableDailyCardsRepository } from "../../contracts/infra/repositories/cards/refresh-available-daily-cards-repository";
 import type { SetCardsRepository } from "../../contracts/infra/repositories/cards/set-cards-repository";
-import type { SetClassicDailyCardRepository } from "../../contracts/infra/repositories/cards/set-classic-daily-card-repository";
+import type { SetDailyCardRepository } from "../../contracts/infra/repositories/cards/set-daily-card-repository";
+import type { Modes } from "../entities/card";
 
 export class ChangeClassicDailyCard implements ChangeClassicDailyCardContract {
 	constructor(
-		private readonly checkAvailableClassicDailyCardsRepository: CheckAvailableClassicDailyCardsRepository,
+		private readonly checkAvailableDailyCardsRepository: CheckAvailableDailyCardsRepository,
 		private readonly chooseCardsRepository: ChooseCardsRepository,
-		private readonly chooseClassicDailyCardRepository: ChooseClassicDailyCardRepository,
-		private readonly refreshAvailableClassicDailyCardsRepository: RefreshAvailableClassicDailyCardsRepository,
+		private readonly chooseDailyCardRepository: ChooseDailyCardRepository,
+		private readonly refreshAvailableDailyCardsRepository: RefreshAvailableDailyCardsRepository,
 		private readonly setCardsRepository: SetCardsRepository,
-		private readonly setClassicDailyCardRepository: SetClassicDailyCardRepository,
+		private readonly setDailyCardRepository: SetDailyCardRepository,
 	) {}
 	async execute(): Promise<void> {
+		const mode: Modes = "availableClassicDailyCard";
 		const cards = await this.chooseCardsRepository.chooseCards();
 		await this.setCardsRepository.setCards(cards);
 		const areCardsAvailable =
-			await this.checkAvailableClassicDailyCardsRepository.checkAvailableClassicDailyCards();
+			await this.checkAvailableDailyCardsRepository.checkAvailableDailyCards(
+				mode,
+			);
 		if (!areCardsAvailable) {
-			await this.refreshAvailableClassicDailyCardsRepository.refreshAvailableClassicDailyCards();
+			await this.refreshAvailableDailyCardsRepository.refreshAvailableDailyCards(
+				mode,
+			);
 		}
 		const dailyCard =
-			await this.chooseClassicDailyCardRepository.chooseClassicDailyCard();
-		await this.setClassicDailyCardRepository.setClassicDailyCard(dailyCard);
+			await this.chooseDailyCardRepository.chooseDailyCard(mode);
+		await this.setDailyCardRepository.setDailyCard(mode, dailyCard);
 	}
 }

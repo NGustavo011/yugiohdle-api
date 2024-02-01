@@ -1,9 +1,6 @@
-import type { SavedCard } from "../../src/domain/entities/card";
+import type { SavedCard, Modes } from "../../src/domain/entities/card";
 import { db } from "../../src/infra/repositories/drizzle/config/connection";
-import {
-	card,
-	type Modes,
-} from "../../src/infra/repositories/drizzle/schemas/card";
+import { card } from "../../src/infra/repositories/drizzle/schemas/card";
 
 type CardDb = typeof card.$inferInsert;
 

@@ -39,6 +39,8 @@ type SavedCardInput = CardInput & {
 	availableArtDailyCard: boolean | null;
 };
 
+export type Modes = "availableClassicDailyCard" | "availableArtDailyCard";
+
 export class Card {
 	private readonly name: string;
 	private readonly type: string;

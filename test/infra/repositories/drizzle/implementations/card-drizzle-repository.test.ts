@@ -17,29 +17,13 @@ describe("CardDrizzle repository", () => {
 		await clearDatabase();
 	});
 
-	describe("checkAvailableArtDailyCards()", () => {
-		test("It should return false if it doesn't find any available cards", async () => {
-			await insertCard(mockSavedCard(), "availableArtDailyCard", false);
-
-			const areCardsAvailable = await sut.checkAvailableArtDailyCards();
-
-			expect(areCardsAvailable).toBeFalsy();
-		});
-
-		test("It should return true if find any available cards", async () => {
-			await insertCard(mockSavedCard(), "availableArtDailyCard");
-
-			const areCardsAvailable = await sut.checkAvailableArtDailyCards();
-
-			expect(areCardsAvailable).toBeTruthy();
-		});
-	});
-
-	describe("checkAvailableClassicDailyCards()", () => {
+	describe("checkAvailableDailyCards()", () => {
 		test("It should return false if it doesn't find any available cards", async () => {
 			await insertCard(mockSavedCard(), "availableClassicDailyCard", false);
 
-			const areCardsAvailable = await sut.checkAvailableClassicDailyCards();
+			const areCardsAvailable = await sut.checkAvailableDailyCards(
+				"availableClassicDailyCard",
+			);
 
 			expect(areCardsAvailable).toBeFalsy();
 		});
@@ -47,49 +31,11 @@ describe("CardDrizzle repository", () => {
 		test("It should return true if find any available cards", async () => {
 			await insertCard(mockSavedCard(), "availableClassicDailyCard");
 
-			const areCardsAvailable = await sut.checkAvailableClassicDailyCards();
+			const areCardsAvailable = await sut.checkAvailableDailyCards(
+				"availableClassicDailyCard",
+			);
 
 			expect(areCardsAvailable).toBeTruthy();
-		});
-	});
-
-	describe("chooseArtDailyCard()", () => {
-		test("Should return an available card and update it at the db to become unavailable", async () => {
-			await insertCard(mockSavedCard(), "availableArtDailyCard", false);
-			await insertCard(mockSavedCard(), "availableArtDailyCard");
-			await insertCard(mockSavedCard(), "availableArtDailyCard");
-
-			const dailyCard = await sut.chooseArtDailyCard();
-			const dailyCardInDb = await db
-				.select()
-				.from(card)
-				.where(eq(card.id, dailyCard.getDto().id));
-
-			expect(dailyCard).toBeTruthy();
-			expect(dailyCard.getDto().availableArtDailyCard).toBeTruthy();
-			expect(dailyCardInDb[0].id).toBe(dailyCard.getDto().id);
-			expect(dailyCardInDb[0].availableArtDailyCard).toBeFalsy();
-		});
-
-		test("Should return an available card with missing information and update it at the db to become unavailable", async () => {
-			await insertCard(
-				mockSavedCardWithPropsNull(),
-				"availableArtDailyCard",
-				false,
-			);
-			await insertCard(mockSavedCardWithPropsNull(), "availableArtDailyCard");
-			await insertCard(mockSavedCardWithPropsNull(), "availableArtDailyCard");
-
-			const dailyCard = await sut.chooseArtDailyCard();
-			const dailyCardInDb = await db
-				.select()
-				.from(card)
-				.where(eq(card.id, dailyCard.getDto().id));
-
-			expect(dailyCard).toBeTruthy();
-			expect(dailyCard.getDto().availableArtDailyCard).toBeTruthy();
-			expect(dailyCardInDb[0].id).toBe(dailyCard.getDto().id);
-			expect(dailyCardInDb[0].availableArtDailyCard).toBeFalsy();
 		});
 	});
 
@@ -132,7 +78,7 @@ describe("CardDrizzle repository", () => {
 			await insertCard(mockSavedCard(), "availableClassicDailyCard");
 			await insertCard(mockSavedCard(), "availableClassicDailyCard");
 
-			const dailyCard = await sut.chooseClassicDailyCard();
+			const dailyCard = await sut.chooseDailyCard("availableClassicDailyCard");
 			const dailyCardInDb = await db
 				.select()
 				.from(card)
@@ -159,7 +105,7 @@ describe("CardDrizzle repository", () => {
 				"availableClassicDailyCard",
 			);
 
-			const dailyCard = await sut.chooseClassicDailyCard();
+			const dailyCard = await sut.chooseDailyCard("availableClassicDailyCard");
 			const dailyCardInDb = await db
 				.select()
 				.from(card)
@@ -169,26 +115,6 @@ describe("CardDrizzle repository", () => {
 			expect(dailyCard.getDto().availableClassicDailyCard).toBeTruthy();
 			expect(dailyCardInDb[0].id).toBe(dailyCard.getDto().id);
 			expect(dailyCardInDb[0].availableClassicDailyCard).toBeFalsy();
-		});
-	});
-
-	describe("refreshAvailableArtDailyCards", () => {
-		test("Must update the available column of all existing cards", async () => {
-			await insertCard(mockSavedCard(), "availableArtDailyCard", false);
-			await insertCard(mockSavedCard(), "availableArtDailyCard");
-			await insertCard(
-				mockSavedCardWithPropsNull(),
-				"availableArtDailyCard",
-				false,
-			);
-
-			await sut.refreshAvailableArtDailyCards();
-			const availableCards = await db
-				.select()
-				.from(card)
-				.where(eq(card.availableArtDailyCard, true));
-
-			expect(availableCards).toHaveLength(3);
 		});
 	});
 
@@ -202,7 +128,7 @@ describe("CardDrizzle repository", () => {
 				false,
 			);
 
-			await sut.refreshAvailableClassicDailyCards();
+			await sut.refreshAvailableDailyCards("availableClassicDailyCard");
 			const availableCards = await db
 				.select()
 				.from(card)

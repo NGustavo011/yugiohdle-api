@@ -13,31 +13,34 @@ import {
 	mockSavedCardWithPropsNull,
 } from "../../mocks/mock-card";
 import { throwError } from "../../mocks/mock-error";
+import type { Modes } from "../../../src/domain/entities/card";
 
 describe("ChangeClassicDailyCard usecase", () => {
-	let checkAvailableClassicDailyCardsRepository: {
-		checkAvailableClassicDailyCards: Mock;
+	const mode: Modes = "availableClassicDailyCard";
+
+	let checkAvailableDailyCardsRepository: {
+		checkAvailableDailyCards: Mock;
 	};
 	let chooseCardsRepository: {
 		chooseCards: Mock;
 	};
-	let chooseClassicDailyCardRepository: {
-		chooseClassicDailyCard: Mock;
+	let chooseDailyCardRepository: {
+		chooseDailyCard: Mock;
 	};
-	let refreshAvailableClassicDailyCardsRepository: {
-		refreshAvailableClassicDailyCards: Mock;
+	let refreshAvailableDailyCardsRepository: {
+		refreshAvailableDailyCards: Mock;
 	};
 	let setCardsRepository: {
 		setCards: Mock;
 	};
-	let setClassicDailyCardRepository: {
-		setClassicDailyCard: Mock;
+	let setDailyCardRepository: {
+		setDailyCard: Mock;
 	};
 	let sut: ChangeClassicDailyCard;
 
 	beforeAll(() => {
-		checkAvailableClassicDailyCardsRepository = {
-			checkAvailableClassicDailyCards: vi.fn().mockImplementation(() => {
+		checkAvailableDailyCardsRepository = {
+			checkAvailableDailyCards: vi.fn().mockImplementation(() => {
 				return true;
 			}),
 		};
@@ -46,13 +49,13 @@ describe("ChangeClassicDailyCard usecase", () => {
 				return [mockSavedCard(), mockSavedCardWithPropsNull()];
 			}),
 		};
-		chooseClassicDailyCardRepository = {
-			chooseClassicDailyCard: vi.fn().mockImplementation(() => {
+		chooseDailyCardRepository = {
+			chooseDailyCard: vi.fn().mockImplementation(() => {
 				return mockSavedCard();
 			}),
 		};
-		refreshAvailableClassicDailyCardsRepository = {
-			refreshAvailableClassicDailyCards: vi.fn().mockImplementation(() => {
+		refreshAvailableDailyCardsRepository = {
+			refreshAvailableDailyCards: vi.fn().mockImplementation(() => {
 				return;
 			}),
 		};
@@ -61,8 +64,8 @@ describe("ChangeClassicDailyCard usecase", () => {
 				return;
 			}),
 		};
-		setClassicDailyCardRepository = {
-			setClassicDailyCard: vi.fn().mockImplementation(() => {
+		setDailyCardRepository = {
+			setDailyCard: vi.fn().mockImplementation(() => {
 				return;
 			}),
 		};
@@ -71,26 +74,101 @@ describe("ChangeClassicDailyCard usecase", () => {
 	beforeEach(() => {
 		vi.clearAllMocks();
 		sut = new ChangeClassicDailyCard(
-			checkAvailableClassicDailyCardsRepository,
+			checkAvailableDailyCardsRepository,
 			chooseCardsRepository,
-			chooseClassicDailyCardRepository,
-			refreshAvailableClassicDailyCardsRepository,
+			chooseDailyCardRepository,
+			refreshAvailableDailyCardsRepository,
 			setCardsRepository,
-			setClassicDailyCardRepository,
+			setDailyCardRepository,
 		);
 	});
 
-	describe("ChooseClassicDailyCardRepository dependency", () => {
-		test("Should call ChooseClassicDailyCardRepository correctly", async () => {
+	describe("CheckAvailableDailyCardsRepository dependency", () => {
+		test("Should call CheckAvailableDailyCardsRepository correctly", async () => {
 			await sut.execute();
 
 			expect(
-				chooseClassicDailyCardRepository.chooseClassicDailyCard,
+				checkAvailableDailyCardsRepository.checkAvailableDailyCards,
+			).toHaveBeenCalledWith(mode);
+		});
+
+		test("Should pass exception if CheckAvailableDailyCardsRepository throws an error", async () => {
+			checkAvailableDailyCardsRepository.checkAvailableDailyCards.mockImplementationOnce(
+				throwError,
+			);
+
+			const promise = sut.execute();
+
+			await expect(promise).rejects.toThrow();
+		});
+	});
+
+	describe("ChooseCardsRepository dependency", () => {
+		test("Should call ChooseCardsRepository correctly", async () => {
+			await sut.execute();
+
+			expect(chooseCardsRepository.chooseCards).toHaveBeenCalledWith();
+		});
+
+		test("Should pass exception if ChooseCardsRepository throws an error", async () => {
+			chooseCardsRepository.chooseCards.mockImplementationOnce(throwError);
+
+			const promise = sut.execute();
+
+			await expect(promise).rejects.toThrow();
+		});
+	});
+
+	describe("ChooseDailyCardRepository dependency", () => {
+		test("Should call ChooseDailyCardRepository correctly", async () => {
+			await sut.execute();
+
+			expect(chooseDailyCardRepository.chooseDailyCard).toHaveBeenCalledWith(
+				mode,
+			);
+		});
+
+		test("Should pass exception if ChooseDailyCardRepository throws an error", async () => {
+			chooseDailyCardRepository.chooseDailyCard.mockImplementationOnce(
+				throwError,
+			);
+
+			const promise = sut.execute();
+
+			await expect(promise).rejects.toThrow();
+		});
+	});
+
+	describe("RefreshAvailableDailyCardRepository dependency", () => {
+		test("Should not call RefreshAvailableDailyCardRepository correctly when CheckAvailableDailyCardsRepository returns true", async () => {
+			await sut.execute();
+
+			expect(
+				refreshAvailableDailyCardsRepository.refreshAvailableDailyCards,
+			).not.toHaveBeenCalledWith(mode);
+		});
+
+		test("Should call RefreshAvailableDailyCardRepository correctly when CheckAvailableDailyCardsRepository returns false", async () => {
+			checkAvailableDailyCardsRepository.checkAvailableDailyCards.mockImplementationOnce(
+				() => {
+					return false;
+				},
+			);
+
+			await sut.execute();
+
+			expect(
+				refreshAvailableDailyCardsRepository.refreshAvailableDailyCards,
 			).toHaveBeenCalled();
 		});
 
-		test("Should pass exception if ChooseClassicDailyCardRepository throws an error", async () => {
-			chooseClassicDailyCardRepository.chooseClassicDailyCard.mockImplementationOnce(
+		test("Should pass exception if RefreshAvailableDailyCardRepository throws an error", async () => {
+			checkAvailableDailyCardsRepository.checkAvailableDailyCards.mockImplementationOnce(
+				() => {
+					return false;
+				},
+			);
+			refreshAvailableDailyCardsRepository.refreshAvailableDailyCards.mockImplementationOnce(
 				throwError,
 			);
 
@@ -119,98 +197,18 @@ describe("ChangeClassicDailyCard usecase", () => {
 		});
 	});
 
-	describe("CheckAvailableClassicDailyCardsRepository dependency", () => {
-		test("Should call CheckAvailableClassicDailyCardsRepository correctly", async () => {
+	describe("SetDailyCardRepository dependency", () => {
+		test("Should call SetDailyCardRepository correctly", async () => {
 			await sut.execute();
 
-			expect(
-				checkAvailableClassicDailyCardsRepository.checkAvailableClassicDailyCards,
-			).toHaveBeenCalled();
-		});
-
-		test("Should pass exception if CheckAvailableClassicDailyCardsRepository throws an error", async () => {
-			checkAvailableClassicDailyCardsRepository.checkAvailableClassicDailyCards.mockImplementationOnce(
-				throwError,
+			expect(setDailyCardRepository.setDailyCard).toHaveBeenCalledWith(
+				mode,
+				mockSavedCard(),
 			);
-
-			const promise = sut.execute();
-
-			await expect(promise).rejects.toThrow();
-		});
-	});
-
-	describe("RefreshAvailableClassicDailyCardRepository dependency", () => {
-		test("Should not call RefreshAvailableClassicDailyCardRepository correctly when CheckAvailableClassicDailyCardsRepository returns true", async () => {
-			await sut.execute();
-
-			expect(
-				refreshAvailableClassicDailyCardsRepository.refreshAvailableClassicDailyCards,
-			).not.toHaveBeenCalled();
 		});
 
-		test("Should call RefreshAvailableClassicDailyCardRepository correctly when CheckAvailableClassicDailyCardsRepository returns false", async () => {
-			checkAvailableClassicDailyCardsRepository.checkAvailableClassicDailyCards.mockImplementationOnce(
-				() => {
-					return false;
-				},
-			);
-
-			await sut.execute();
-
-			expect(
-				refreshAvailableClassicDailyCardsRepository.refreshAvailableClassicDailyCards,
-			).toHaveBeenCalled();
-		});
-
-		test("Should pass exception if RefreshAvailableClassicDailyCardRepository throws an error", async () => {
-			checkAvailableClassicDailyCardsRepository.checkAvailableClassicDailyCards.mockImplementationOnce(
-				() => {
-					return false;
-				},
-			);
-			refreshAvailableClassicDailyCardsRepository.refreshAvailableClassicDailyCards.mockImplementationOnce(
-				throwError,
-			);
-
-			const promise = sut.execute();
-
-			await expect(promise).rejects.toThrow();
-		});
-	});
-
-	describe("ChooseClassicDailyCardRepository dependency", () => {
-		test("Should call ChooseClassicDailyCardRepository correctly", async () => {
-			await sut.execute();
-
-			expect(
-				chooseClassicDailyCardRepository.chooseClassicDailyCard,
-			).toHaveBeenCalled();
-		});
-
-		test("Should pass exception if ChooseClassicDailyCardRepository throws an error", async () => {
-			chooseClassicDailyCardRepository.chooseClassicDailyCard.mockImplementationOnce(
-				throwError,
-			);
-
-			const promise = sut.execute();
-
-			await expect(promise).rejects.toThrow();
-		});
-	});
-
-	describe("SetClassicDailyCardRepository dependency", () => {
-		test("Should call SetClassicDailyCardRepository correctly", async () => {
-			await sut.execute();
-
-			expect(
-				setClassicDailyCardRepository.setClassicDailyCard,
-			).toHaveBeenCalledWith(mockSavedCard());
-		});
-
-		test("Should pass exception if SetClassicDailyCardRepository throws an error", async () => {
-			setClassicDailyCardRepository.setClassicDailyCard.mockImplementationOnce(
-				throwError,
-			);
+		test("Should pass exception if SetDailyCardRepository throws an error", async () => {
+			setDailyCardRepository.setDailyCard.mockImplementationOnce(throwError);
 
 			const promise = sut.execute();
 

@@ -4,17 +4,13 @@ import { CardRedisRepository } from "../../../infra/repositories/redis/implement
 
 export const makeChangeArtDailyCard = (): ChangeArtDailyCard => {
 	const checkAvailableArtDailyCardsRepository = new CardDrizzleRepository();
-	const chooseCardsRepository = new CardDrizzleRepository();
 	const chooseArtDailyCardRepository = new CardDrizzleRepository();
 	const refreshAvailableArtDailyCardsRepository = new CardDrizzleRepository();
-	const setCardsRepository = new CardRedisRepository();
 	const setArtDailyCardRepository = new CardRedisRepository();
 	return new ChangeArtDailyCard(
 		checkAvailableArtDailyCardsRepository,
-		chooseCardsRepository,
 		chooseArtDailyCardRepository,
 		refreshAvailableArtDailyCardsRepository,
-		setCardsRepository,
 		setArtDailyCardRepository,
 	);
 };

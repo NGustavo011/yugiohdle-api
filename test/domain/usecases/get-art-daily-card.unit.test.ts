@@ -10,16 +10,19 @@ import {
 import { GetArtDailyCard } from "../../../src/domain/usecases/get-art-daily-card";
 import { mockSavedCard } from "../../mocks/mock-card";
 import { throwError } from "../../mocks/mock-error";
+import type { Modes } from "../../../src/domain/entities/card";
 
 describe("GetArtDailyCard usecase", () => {
-	let getArtDailyCardRepository: {
-		getArtDailyCard: Mock;
+	const mode: Modes = "availableArtDailyCard";
+
+	let getDailyCardRepository: {
+		getDailyCard: Mock;
 	};
 	let sut: GetArtDailyCard;
 
 	beforeAll(() => {
-		getArtDailyCardRepository = {
-			getArtDailyCard: vi.fn().mockImplementation(() => {
+		getDailyCardRepository = {
+			getDailyCard: vi.fn().mockImplementation(() => {
 				return mockSavedCard();
 			}),
 		};
@@ -27,20 +30,18 @@ describe("GetArtDailyCard usecase", () => {
 
 	beforeEach(() => {
 		vi.clearAllMocks();
-		sut = new GetArtDailyCard(getArtDailyCardRepository);
+		sut = new GetArtDailyCard(getDailyCardRepository);
 	});
 
-	describe("GetArtDailyCardRepository dependency", () => {
-		test("Should call GetArtDailyCardRepository correctly", async () => {
+	describe("GetDailyCardRepository dependency", () => {
+		test("Should call GetDailyCardRepository correctly", async () => {
 			await sut.execute();
 
-			expect(getArtDailyCardRepository.getArtDailyCard).toHaveBeenCalled();
+			expect(getDailyCardRepository.getDailyCard).toHaveBeenCalledWith(mode);
 		});
 
-		test("Should pass exception if GetArtDailyCardRepository throws an error", async () => {
-			getArtDailyCardRepository.getArtDailyCard.mockImplementationOnce(
-				throwError,
-			);
+		test("Should pass exception if GetDailyCardRepository throws an error", async () => {
+			getDailyCardRepository.getDailyCard.mockImplementationOnce(throwError);
 
 			const promise = sut.execute();
 

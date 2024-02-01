@@ -1,7 +1,5 @@
 import { pgTable, uuid, varchar, numeric, boolean } from "drizzle-orm/pg-core";
 
-export type Modes = "availableClassicDailyCard" | "availableArtDailyCard";
-
 export const card = pgTable("card", {
 	id: uuid("id").primaryKey().defaultRandom(),
 	name: varchar("name", { length: 255 }).notNull(),

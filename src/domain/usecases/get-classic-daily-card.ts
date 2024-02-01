@@ -1,13 +1,15 @@
 import type { GetClassicDailyCardContract } from "../../contracts/domain/usecases/get-classic-daily-card-contract";
-import type { GetClassicDailyCardRepository } from "../../contracts/infra/repositories/cards/get-classic-daily-card-repository";
+import type { GetDailyCardRepository } from "../../contracts/infra/repositories/cards/get-daily-card-repository";
+import type { Modes } from "../entities/card";
 import type { SavedCard } from "../entities/card";
 
 export class GetClassicDailyCard implements GetClassicDailyCardContract {
 	constructor(
-		private readonly getClassicDailyCardRepository: GetClassicDailyCardRepository,
+		private readonly getDailyCardRepository: GetDailyCardRepository,
 	) {}
 	async execute(): Promise<SavedCard> {
-		const card = await this.getClassicDailyCardRepository.getClassicDailyCard();
+		const mode: Modes = "availableClassicDailyCard";
+		const card = await this.getDailyCardRepository.getDailyCard(mode);
 		return card;
 	}
 }
